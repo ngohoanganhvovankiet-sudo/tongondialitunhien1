@@ -1,0 +1,1843 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Trạm Kiểm Định Kiến Thức - Địa Lí Tự Nhiên 12</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --neon-cyan: #00f3ff;
+            --neon-green: #10b981;
+            --neon-red: #f43f5e;
+            --neon-amber: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #030712;
+            color: #e2e8f0;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .font-mono-tech {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* */
+        .cyber-bg {
+            background-color: #030816;
+            background-image: 
+                radial-gradient(circle at 18% 22%, rgba(6, 182, 212, 0.24) 0%, transparent 45%),
+                radial-gradient(circle at 82% 75%, rgba(16, 185, 129, 0.20) 0%, transparent 45%),
+                radial-gradient(circle at 50% 50%, rgba(30, 64, 175, 0.18) 0%, transparent 70%),
+                linear-gradient(rgba(14, 165, 233, 0.07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(14, 165, 233, 0.07) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 100% 100%, 36px 36px, 36px 36px;
+            background-position: center center;
+        }
+
+        @keyframes radarSpin {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-14px) scale(1.03); }
+        }
+
+        .radar-sweep-ring {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 820px;
+            height: 820px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, rgba(0, 243, 255, 0.16) 0deg, rgba(16, 185, 129, 0.05) 60deg, transparent 100deg, transparent 360deg);
+            animation: radarSpin 18s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-float-map {
+            animation: floatSlow 9s ease-in-out infinite;
+        }
+
+        /* Scanner Laser Animation */
+        @keyframes laserScan {
+            0% {
+                top: 0%;
+                opacity: 0.9;
+            }
+            50% {
+                top: 96%;
+                opacity: 1;
+            }
+            100% {
+                top: 0%;
+                opacity: 0.9;
+            }
+        }
+
+        .scanner-laser {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent 0%, #00f3ff 20%, #ffffff 50%, #00f3ff 80%, transparent 100%);
+            box-shadow: 0 0 18px 4px rgba(0, 243, 255, 0.75);
+            animation: laserScan 3.2s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        /* Anti-AI Security Blur when losing focus or taking screenshot */
+        .anti-ai-blur {
+            filter: blur(18px) brightness(0.3);
+            transition: filter 0.15s ease;
+        }
+
+        /* Card Slide In / Conveyor Belt Animation */
+        @keyframes cardConveyorIn {
+            0% {
+                transform: translateX(-110%) scale(0.92);
+                opacity: 0;
+            }
+            70% {
+                transform: translateX(3%) scale(1.01);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes cardConveyorOutRight {
+            0% {
+                transform: translateX(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(120%) scale(0.9);
+                opacity: 0;
+            }
+        }
+
+        .card-enter {
+            animation: cardConveyorIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        .card-exit {
+            animation: cardConveyorOutRight 0.45s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+        }
+
+        /* Stamp Slam Animation */
+        @keyframes stampSlam {
+            0% {
+                transform: scale(3.2) rotate(-18deg);
+                opacity: 0;
+            }
+            60% {
+                transform: scale(0.9) rotate(-12deg);
+                opacity: 1;
+            }
+            80% {
+                transform: scale(1.05) rotate(-12deg);
+            }
+            100% {
+                transform: scale(1) rotate(-12deg);
+                opacity: 1;
+            }
+        }
+
+        .stamp-animate {
+            animation: stampSlam 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        /* Shake Error Effect */
+        @keyframes errorShake {
+            0%, 100% { transform: translateX(0); }
+            15%, 45%, 75% { transform: translateX(-8px); }
+            30%, 60%, 90% { transform: translateX(8px); }
+        }
+
+        .shake-error {
+            animation: errorShake 0.45s ease-in-out;
+        }
+
+        /* Conveyor Dots Movement */
+        @keyframes conveyorMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 40px 0; }
+        }
+
+        .conveyor-track {
+            background-image: repeating-linear-gradient(
+                90deg,
+                rgba(56, 189, 248, 0.25) 0px,
+                rgba(56, 189, 248, 0.25) 12px,
+                transparent 12px,
+                transparent 24px
+            );
+            background-size: 40px 100%;
+            animation: conveyorMove 1.2s linear infinite;
+        }
+
+        /* Glassmorphism Card */
+        .tech-panel {
+            background: rgba(10, 18, 36, 0.84);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(56, 189, 248, 0.32);
+            box-shadow: 0 12px 40px -5px rgba(0, 0, 0, 0.7), inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #091326;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e3a8a;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #38bdf8;
+        }
+    </style>
+</head>
+<body class="cyber-bg flex flex-col justify-between min-h-screen text-slate-100" oncontextmenu="return false;" oncopy="return false;" oncut="return false;" ondragstart="return false;">
+
+    <!-- -->
+    <!-- EYE-CATCHING ANIMATED GEOGRAPHY SATELLITE BACKGROUND -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <!-- Rotating Radar Sweep -->
+        <div class="radar-sweep-ring"></div>
+
+        <!-- Concentric Radar Circles & Topographic Contours SVG -->
+        <svg class="absolute inset-0 w-full h-full opacity-25 bg-float-map" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+            <defs>
+                <linearGradient id="topoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#00f3ff" stop-opacity="0.6"/>
+                    <stop offset="50%" stop-color="#10b981" stop-opacity="0.4"/>
+                    <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.6"/>
+                </linearGradient>
+            </defs>
+            <!-- Radar Rings -->
+            <circle cx="720" cy="450" r="160" fill="none" stroke="url(#topoGrad)" stroke-width="1" stroke-dasharray="6 6"/>
+            <circle cx="720" cy="450" r="310" fill="none" stroke="url(#topoGrad)" stroke-width="1"/>
+            <circle cx="720" cy="450" r="460" fill="none" stroke="url(#topoGrad)" stroke-width="1" stroke-dasharray="12 8"/>
+            <circle cx="720" cy="450" r="620" fill="none" stroke="url(#topoGrad)" stroke-width="1"/>
+            <!-- Crosshairs -->
+            <line x1="0" y1="450" x2="1440" y2="450" stroke="#00f3ff" stroke-width="0.6" stroke-opacity="0.35"/>
+            <line x1="720" y1="0" x2="720" y2="900" stroke="#00f3ff" stroke-width="0.6" stroke-opacity="0.35"/>
+            <!-- Topographic Elevation Curves -->
+            <path d="M-100,200 C250,120 400,350 750,220 C1100,90 1250,300 1550,180" fill="none" stroke="url(#topoGrad)" stroke-width="1.5"/>
+            <path d="M-100,680 C300,560 520,790 890,640 C1180,520 1320,720 1550,650" fill="none" stroke="url(#topoGrad)" stroke-width="1.5"/>
+            <path d="M120,-50 C240,280 80,560 260,950" fill="none" stroke="#10b981" stroke-width="1" stroke-opacity="0.3" stroke-dasharray="5 5"/>
+            <path d="M1280,-50 C1140,300 1340,600 1180,950" fill="none" stroke="#00f3ff" stroke-width="1" stroke-opacity="0.3" stroke-dasharray="5 5"/>
+            <!-- Coordinate Labels -->
+            <text x="40" y="440" fill="#38bdf8" font-family="monospace" font-size="11" opacity="0.7">VĨ TUYẾN: 23°23'B - 8°34'B</text>
+            <text x="1220" y="440" fill="#10b981" font-family="monospace" font-size="11" opacity="0.7">KINH TUYẾN: 102°09'Đ - 109°28'Đ</text>
+            <text x="730" y="40" fill="#f59e0b" font-family="monospace" font-size="11" opacity="0.7">VỆ TINH ĐỊA LÍ VN-SAT12</text>
+        </svg>
+    </div>
+
+    <!-- TOP BAR -->
+    <header class="w-full border-b border-cyan-500/30 bg-slate-950/85 backdrop-blur-md sticky top-0 z-30 px-3 py-2 sm:px-6">
+        <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2">
+            <!-- Brand Title -->
+            <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/25 border border-cyan-300/40">
+                    <i class="fa-solid fa-satellite-dish text-white text-base sm:text-lg animate-pulse"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] sm:text-xs font-mono-tech uppercase tracking-widest px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-400/30">GEO-SCAN v12.5 PRO</span>
+                        <span id="headerLevelBadge" class="hidden text-[10px] sm:text-xs font-mono-tech uppercase tracking-wider px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-400/30">CẤP ĐỘ 1</span>
+                        <span class="hidden sm:inline-flex items-center gap-1 text-[10px] font-mono-tech px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-400/30">
+                            <i class="fa-solid fa-shield-halved"></i> CHỐNG AI: BẬT
+                        </span>
+                    </div>
+                    <h1 class="text-sm sm:text-lg font-extrabold tracking-tight text-white">TRẠM KIỂM ĐỊNH KIẾN THỨC ĐỊA LÍ</h1>
+                </div>
+            </div>
+
+            <!-- Inspector Info & Controls -->
+            <div class="flex items-center gap-2 sm:gap-4">
+                <!-- Student Tag (Visible during game) -->
+                <div id="inspectorBadge" class="hidden items-center gap-2 bg-slate-900/90 border border-slate-700/80 px-2.5 py-1 rounded-lg text-xs">
+                    <i class="fa-solid fa-user-astronaut text-cyan-400"></i>
+                    <div class="leading-tight">
+                        <div id="displayStudentName" class="font-bold text-white truncate max-w-[110px] sm:max-w-[160px]">---</div>
+                        <div id="displayStudentClass" class="text-[10px] text-cyan-300 font-mono-tech">Lớp: ---</div>
+                    </div>
+                </div>
+
+                <!-- Sound Toggle Button -->
+                <button id="soundToggleBtn" onclick="toggleAudio()" class="p-2 sm:px-3 sm:py-2 rounded-lg bg-slate-800/90 hover:bg-slate-700 border border-cyan-500/30 text-cyan-300 transition flex items-center gap-1.5 text-xs font-semibold cursor-pointer" title="Bật/Tắt âm thanh">
+                    <i id="soundIcon" class="fa-solid fa-volume-high text-sm"></i>
+                    <span class="hidden md:inline" id="soundText">Âm thanh: BẬT</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- -->
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-1 flex items-center justify-center p-2.5 sm:p-5 w-full max-w-6xl mx-auto relative z-10">
+
+        <!-- 1. START SCREEN -->
+        <section id="startScreen" class="w-full max-w-2xl tech-panel rounded-2xl p-5 sm:p-8 relative overflow-hidden">
+            <div class="absolute -top-24 -right-24 w-52 h-52 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -left-24 w-52 h-52 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="text-center mb-5">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-cyan-500/15 border border-cyan-400/40 text-cyan-300 text-xs font-mono-tech mb-3">
+                    <i class="fa-solid fa-earth-asia"></i> NGÂN HÀNG 45 HỒ SƠ ĐỊA LÍ TỰ NHIÊN 12 (BÀI 1, 2, 3)
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-white to-emerald-300">
+                    TRẠM KIỂM ĐỊNH DỮ LIỆU ĐỊA LÍ
+                </h2>
+                <p class="text-xs sm:text-sm text-slate-300 mt-2 leading-relaxed">
+                    Mỗi lượt chơi, hệ thống sẽ <b>trích xuất ngẫu nhiên 15 thẻ dữ liệu</b> từ ngân hàng <b>45 hồ sơ chuyên sâu</b> (đảm bảo mỗi học sinh và mỗi lượt chơi có bộ đề khác nhau). Hãy phát hiện các chi tiết bị tráo khái niệm, sai lệch số liệu hoặc vi điểm cực nhỏ!
+                </p>
+            </div>
+
+            <!-- Rules & Reward Summary Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4 text-xs">
+                <div class="bg-slate-900/80 border border-emerald-500/35 rounded-xl p-3.5 flex gap-3 items-start">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center shrink-0 text-emerald-400 mt-0.5">
+                        <i class="fa-solid fa-medal text-base"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-emerald-300 mb-0.5">Hoàn Thành Xuất Sắc (+0.5 điểm)</h3>
+                        <p class="text-slate-300 leading-snug">Kiểm định chính xác 15/15 thẻ ngẫu nhiên qua 3 cấp độ mà <b>không dùng gợi ý</b> và không vi phạm quy chế chống AI.</p>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/80 border border-amber-500/35 rounded-xl p-3.5 flex gap-3 items-start">
+                    <div class="w-8 h-8 rounded-lg bg-amber-500/20 border border-amber-400/40 flex items-center justify-center shrink-0 text-amber-400 mt-0.5">
+                        <i class="fa-solid fa-magnifying-glass-chart text-base"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-amber-300 mb-0.5">Hoàn Thành Khóa Học (+0.25 điểm)</h3>
+                        <p class="text-slate-300 leading-snug">Hoàn thành toàn bộ 15 thẻ dữ liệu có kích hoạt <b>Chế độ soi lại chứng cứ (gợi ý)</b> khi phán đoán sai.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Anti-AI Protection Banner -->
+            <div class="bg-rose-950/40 border border-rose-500/40 rounded-xl p-3 mb-5 flex items-center gap-3 text-xs text-rose-200">
+                <div class="w-8 h-8 rounded-lg bg-rose-500/20 border border-rose-400/40 flex items-center justify-center shrink-0 text-rose-400">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+                <div class="leading-relaxed">
+                    <b class="text-rose-300 uppercase font-mono-tech">Chế độ chống gian lận AI:</b> Thẻ dữ liệu được vẽ trực tiếp lên <b>Canvas bảo mật chống sao chép & chống quét OCR</b>, đi kèm đồng hồ đếm ngược <b>20 giây/thẻ</b> và bộ cảm biến phát hiện chuyển tab/ứng dụng.
+                </div>
+            </div>
+
+            <!-- Login Form -->
+            <div class="bg-slate-900/90 border border-cyan-500/30 rounded-xl p-4 sm:p-5 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                    <span class="text-xs font-mono-tech uppercase text-cyan-400 font-bold">
+                        <i class="fa-solid fa-id-card-clip mr-1.5"></i>ĐĂNG KÝ THẺ KIỂM ĐỊNH VIÊN
+                    </span>
+                    <span class="text-[11px] text-slate-400">Đề ngẫu nhiên theo phiên</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                    <div class="sm:col-span-2">
+                        <label for="studentNameInput" class="block text-xs font-semibold text-slate-300 mb-1.5">Họ và tên học sinh <span class="text-rose-400">*</span></label>
+                        <div class="relative">
+                            <i class="fa-solid fa-user-graduate absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                            <input type="text" id="studentNameInput" placeholder="Ví dụ: Nguyễn Minh Anh" 
+                                class="w-full pl-9 pr-3 py-2.5 rounded-lg bg-slate-950 border border-slate-700 focus:border-cyan-400 focus:outline-none text-sm text-white placeholder-slate-500 transition">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="studentClassInput" class="block text-xs font-semibold text-slate-300 mb-1.5">Lớp <span class="text-rose-400">*</span></label>
+                        <div class="relative">
+                            <i class="fa-solid fa-school absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                            <input type="text" id="studentClassInput" placeholder="Ví dụ: 12A1" 
+                                class="w-full pl-9 pr-3 py-2.5 rounded-lg bg-slate-950 border border-slate-700 focus:border-cyan-400 focus:outline-none text-sm text-white placeholder-slate-500 transition">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Error Notification Box -->
+                <div id="loginErrorMsg" class="hidden rounded-lg bg-rose-500/15 border border-rose-500/40 px-3 py-2 text-xs text-rose-300 flex items-center gap-2">
+                    <i class="fa-solid fa-triangle-exclamation text-rose-400"></i>
+                    <span>Vui lòng nhập đầy đủ <b>Họ và tên</b> cùng <b>Lớp</b> để cấp mã Kiểm định viên!</span>
+                </div>
+
+                <button onclick="startInspectionGame()" class="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-extrabold text-sm sm:text-base shadow-lg shadow-cyan-500/25 transition transform active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-power-off"></i>
+                    <span>KHỞI ĐỘNG MÁY QUÉT (BỐC ĐỀ NGẪU NHIÊN)</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- -->
+        <!-- 2. GAMEPLAY SCREEN -->
+        <section id="gameScreen" class="hidden w-full flex-col gap-3 sm:gap-4">
+            
+            <!-- Top Dashboard Metrics -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3">
+                <!-- Progress Card -->
+                <div class="tech-panel rounded-xl p-2.5 sm:p-3 flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-lg bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shrink-0">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </div>
+                    <div class="w-full">
+                        <div class="flex justify-between text-[11px] text-slate-400 font-mono-tech">
+                            <span>TIẾN ĐỘ QUÉT</span>
+                            <span id="progressCounter" class="text-cyan-300 font-bold">1/15</span>
+                        </div>
+                        <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden mt-1">
+                            <div id="progressBar" class="h-full bg-gradient-to-r from-cyan-400 to-emerald-400 transition-all duration-300" style="width: 6.6%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Countdown Timer (Anti-AI) -->
+                <div class="tech-panel rounded-xl p-2.5 sm:p-3 flex items-center gap-3">
+                    <div id="timerIconBox" class="w-9 h-9 rounded-lg bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shrink-0">
+                        <i class="fa-solid fa-stopwatch"></i>
+                    </div>
+                    <div class="w-full">
+                        <div class="flex justify-between text-[11px] text-slate-400 font-mono-tech">
+                            <span>THỜI GIAN QUÉT</span>
+                            <span id="timerText" class="text-cyan-300 font-bold">20s</span>
+                        </div>
+                        <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden mt-1">
+                            <div id="timerBar" class="h-full bg-cyan-400 transition-all duration-500" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Credibility Score -->
+                <div class="tech-panel rounded-xl p-2.5 sm:p-3 flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-lg bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">
+                        <i class="fa-solid fa-shield-check"></i>
+                    </div>
+                    <div>
+                        <div class="text-[11px] text-slate-400 font-mono-tech">ĐỘ UY TÍN</div>
+                        <div class="flex items-baseline gap-1.5">
+                            <span id="credibilityScore" class="text-sm sm:text-base font-extrabold font-mono-tech text-emerald-400">100</span>
+                            <span id="streakBadge" class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono-tech">Chuỗi: 0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hint Status / Bonus Track -->
+                <div class="tech-panel rounded-xl p-2.5 sm:p-3 flex items-center gap-3">
+                    <div id="bonusIconBox" class="w-9 h-9 rounded-lg bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0">
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <div class="overflow-hidden">
+                        <div class="text-[11px] text-slate-400 font-mono-tech">MỤC TIÊU THƯỞNG</div>
+                        <div id="bonusStatusText" class="text-xs sm:text-sm font-bold text-emerald-300 truncate">+0.5đ (Chưa dùng gợi ý)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Anti-Tab Switch Warning Toast -->
+            <div id="antiAiWarningBar" class="hidden rounded-xl bg-rose-950/90 border border-rose-500 px-4 py-2.5 text-xs text-rose-200 flex items-center justify-between gap-2 shadow-lg">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-triangle-exclamation text-rose-400 text-sm animate-bounce"></i>
+                    <span id="antiAiWarningText">Cảnh báo bảo mật: Phát hiện rời khỏi màn hình kiểm định! Không sử dụng công cụ AI bên ngoài.</span>
+                </div>
+                <span id="focusViolationBadge" class="font-mono-tech font-bold px-2 py-0.5 rounded bg-rose-500/30 text-rose-200 shrink-0">Vi phạm: 1 lần</span>
+            </div>
+
+            <!-- SCANNER CHAMBER -->
+            <div class="tech-panel rounded-2xl p-3 sm:p-6 relative overflow-hidden border-2 border-cyan-500/35">
+                <!-- Scanner Chamber Header Bar -->
+                <div class="flex flex-wrap items-center justify-between gap-2 pb-3 mb-3 border-b border-slate-800">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                        <span class="text-xs font-mono-tech text-cyan-300 tracking-wider uppercase font-bold" id="cardCodeLabel">HỒ SƠ #GEO-001</span>
+                        <span id="levelTitleText" class="text-[11px] font-mono-tech font-bold px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-400/30">
+                            CẤP 1: CƠ BẢN
+                        </span>
+                        <span id="cardTopicBadge" class="text-[11px] px-2.5 py-0.5 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-200 font-medium">
+                            Bài 1: Vị trí địa lí & Phạm vi lãnh thổ
+                        </span>
+                    </div>
+                    <div class="flex items-center gap-2 text-xs font-mono-tech text-slate-400">
+                        <i class="fa-solid fa-fingerprint text-cyan-400"></i>
+                        <span id="cardPrecisionNote">Mã hóa chống AI-OCR</span>
+                    </div>
+                </div>
+
+                <!-- Conveyor Track Top -->
+                <div class="w-full h-2 rounded-full conveyor-track mb-3 opacity-70"></div>
+
+                <!-- THE DATA CARD INSIDE SCANNER -->
+                <div id="scannerViewport" class="relative min-h-[215px] sm:min-h-[240px] flex flex-col justify-center rounded-xl bg-slate-950/95 border border-cyan-400/40 p-3.5 sm:p-6 shadow-inner overflow-hidden">
+                    <!-- Laser Beam -->
+                    <div id="laserBeam" class="scanner-laser"></div>
+
+                    <!-- Corner Tech Brackets -->
+                    <div class="absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-cyan-400/70 pointer-events-none"></div>
+                    <div class="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-cyan-400/70 pointer-events-none"></div>
+                    <div class="absolute bottom-2 left-2 w-4 h-4 border-b-2 border-l-2 border-cyan-400/70 pointer-events-none"></div>
+                    <div class="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-cyan-400/70 pointer-events-none"></div>
+
+                    <!-- Card Content Container -->
+                    <div id="dataCardBody" class="relative z-10 space-y-2.5">
+                        <div class="flex items-center justify-between text-xs text-slate-400 font-mono-tech">
+                            <span id="cardSubHeader"><i class="fa-solid fa-shield-cat mr-1 text-cyan-400"></i>BẢN QUÉT ĐỊA LÍ TỰ NHIÊN (CHỐNG SAO CHÉP AI):</span>
+                            <span id="cardAttemptTag" class="hidden text-amber-300 bg-amber-500/15 border border-amber-400/30 px-2 py-0.5 rounded">
+                                <i class="fa-solid fa-eye mr-1"></i>Đang soi lại chứng cứ
+                            </span>
+                        </div>
+
+                        <!-- ANTI-AI CANVAS STATEMENT RENDERER -->
+                        <div id="canvasStatementWrapper" class="w-full rounded-xl bg-slate-900/90 border border-slate-800 p-2 sm:p-3 overflow-hidden relative">
+                            <canvas id="statementCanvas" class="w-full block"></canvas>
+                        </div>
+
+                        <div class="flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-400 pt-1">
+                            <span><i class="fa-solid fa-circle-info text-cyan-400 mr-1"></i>Đối chiếu kỹ số liệu, hướng gió, độ cao, tên tỉnh/thành phố và ranh giới tự nhiên.</span>
+                            <button onclick="openManualHint()" id="manualHintBtn" class="text-amber-300 hover:text-amber-200 underline decoration-dotted font-medium flex items-center gap-1 cursor-pointer">
+                                <i class="fa-regular fa-lightbulb"></i> Xem gợi ý SGK (Giảm thưởng còn +0.25đ)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- VERIFICATION STAMP OVERLAY -->
+                    <div id="stampOverlay" class="hidden absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 z-30 pointer-events-none">
+                        <div id="stampBox" class="border-4 border-emerald-400 text-emerald-400 bg-slate-950/95 px-4 py-2 rounded-xl font-mono-tech font-extrabold uppercase tracking-widest text-center shadow-2xl">
+                            <div class="text-xs" id="stampCodeText">MÃ KĐ: #VN-882</div>
+                            <div class="text-base sm:text-xl border-y border-emerald-400/50 my-0.5 py-0.5" id="stampMainText">ĐÃ KIỂM ĐỊNH</div>
+                            <div class="text-[10px]">CHÍNH XÁC 100%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conveyor Track Bottom -->
+                <div class="w-full h-2 rounded-full conveyor-track mt-3 opacity-70"></div>
+
+                <!-- EVIDENCE INSPECTION / FEEDBACK DRAWER -->
+                <div id="evidenceDrawer" class="hidden mt-4 rounded-xl p-4 border transition-all">
+                    <div class="flex items-start gap-3">
+                        <div id="drawerIcon" class="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 mt-0.5 text-lg">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </div>
+                        <div class="flex-1 space-y-1.5">
+                            <div class="flex items-center justify-between flex-wrap gap-1">
+                                <h4 id="drawerTitle" class="font-extrabold text-sm sm:text-base uppercase tracking-wide">CHẾ ĐỘ SOI LẠI CHỨNG CỨ</h4>
+                                <span id="drawerTag" class="text-[11px] font-mono-tech px-2 py-0.5 rounded">HỖ TRỢ KIỂM ĐỊNH</span>
+                            </div>
+                            <p id="drawerText" class="text-xs sm:text-sm text-slate-200 leading-relaxed"></p>
+                            
+                            <!-- Next Card Button (Appears after correct decision) -->
+                            <div id="nextActionContainer" class="hidden pt-2">
+                                <button onclick="advanceToNextCard()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-extrabold text-xs sm:text-sm shadow-lg shadow-emerald-500/20 flex items-center gap-2 transition cursor-pointer">
+                                    <span id="nextBtnText">ĐƯA THẺ TIẾP THEO VÀO MÁY QUÉT</span>
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACTION CONTROLS (DECISION BUTTONS) -->
+                <div id="decisionButtonsRow" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
+                    <button id="btnApprove" onclick="submitDecision(true)" class="group py-3.5 px-5 rounded-xl bg-gradient-to-r from-emerald-600/90 to-teal-600/90 hover:from-emerald-500 hover:to-teal-500 border border-emerald-400/50 text-white font-bold text-sm sm:text-base shadow-lg shadow-emerald-950/50 transition transform active:scale-[0.98] flex items-center justify-center gap-3 cursor-pointer">
+                        <div class="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center group-hover:scale-110 transition">
+                            <i class="fa-solid fa-stamp text-emerald-200"></i>
+                        </div>
+                        <div class="text-left">
+                            <div class="text-xs font-mono-tech text-emerald-200 uppercase">Xác thực chuẩn SGK</div>
+                            <div>THÔNG TIN CHÍNH XÁC</div>
+                        </div>
+                    </button>
+
+                    <button id="btnReject" onclick="submitDecision(false)" class="group py-3.5 px-5 rounded-xl bg-gradient-to-r from-rose-600/90 to-orange-600/90 hover:from-rose-500 hover:to-orange-500 border border-rose-400/50 text-white font-bold text-sm sm:text-base shadow-lg shadow-rose-950/50 transition transform active:scale-[0.98] flex items-center justify-center gap-3 cursor-pointer">
+                        <div class="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center group-hover:scale-110 transition">
+                            <i class="fa-solid fa-bug-slash text-rose-200"></i>
+                        </div>
+                        <div class="text-left">
+                            <div class="text-xs font-mono-tech text-rose-200 uppercase">Sai lệch / Bị tráo đổi</div>
+                            <div>PHÁT HIỆN DỮ LIỆU SAI</div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. CERTIFICATE & END SCREEN -->
+        <section id="certificateScreen" class="hidden w-full max-w-3xl">
+            <div id="certificateCard" class="tech-panel rounded-2xl p-5 sm:p-8 border-2 border-amber-400/60 relative overflow-hidden shadow-2xl">
+                <!-- Decorative Glow -->
+                <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-48 bg-amber-500/20 blur-3xl pointer-events-none"></div>
+
+                <!-- Certificate Header -->
+                <div class="text-center border-b border-slate-700/80 pb-5 relative z-10">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 text-xs font-mono-tech mb-2">
+                        <i class="fa-solid fa-award"></i> HỘI ĐỒNG KIỂM ĐỊNH ĐỊA LÍ TỰ NHIÊN VIỆT NAM
+                    </div>
+                    <h2 id="certHeaderTitle" class="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-yellow-300 to-amber-400 uppercase tracking-wide mt-1">
+                        CHỨNG NHẬN HOÀN THÀNH XUẤT SẮC
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-300 mt-1">Khóa học: Địa Lí Tự Nhiên Việt Nam (Bài 1 - Bài 2 - Bài 3)</p>
+                </div>
+
+                <!-- Student & Reward Highlight -->
+                <div class="my-6 grid grid-cols-1 md:grid-cols-3 gap-4 items-center relative z-10">
+                    <div class="md:col-span-2 bg-slate-900/90 border border-slate-700 rounded-xl p-4 space-y-2.5">
+                        <div class="text-xs font-mono-tech text-cyan-400 uppercase">Cấp cho Kiểm định viên:</div>
+                        <div id="certStudentName" class="text-xl sm:text-2xl font-extrabold text-white">Nguyễn Văn A</div>
+                        <div class="flex flex-wrap gap-3 text-xs text-slate-300">
+                            <span class="bg-slate-800 px-2.5 py-1 rounded-md border border-slate-700">
+                                <i class="fa-solid fa-users-rectangle text-cyan-400 mr-1"></i>Lớp: <b id="certStudentClass" class="text-white">12A1</b>
+                            </span>
+                            <span class="bg-slate-800 px-2.5 py-1 rounded-md border border-slate-700">
+                                <i class="fa-solid fa-fingerprint text-emerald-400 mr-1"></i>Mã CN: <b id="certSerialCode" class="font-mono-tech text-emerald-300">GEO-2026-9981</b>
+                            </span>
+                        </div>
+                        <p id="certEvaluationDesc" class="text-xs sm:text-sm text-slate-300 pt-1 leading-relaxed">
+                            Đã kiểm định chính xác toàn bộ 15/15 hồ sơ dữ liệu địa lí tự nhiên qua 3 cấp độ khó mà không cần sử dụng bất kỳ gợi ý nào từ hệ thống.
+                        </p>
+                    </div>
+
+                    <!-- Bonus Score Box -->
+                    <div id="certRewardBox" class="bg-gradient-to-br from-amber-500/25 via-yellow-500/15 to-emerald-500/20 border-2 border-amber-400/60 rounded-xl p-4 text-center flex flex-col items-center justify-center h-full">
+                        <div class="w-12 h-12 rounded-full bg-amber-400/20 border border-amber-300 flex items-center justify-center text-amber-300 text-2xl mb-2 shadow-lg">
+                            <i id="certBadgeIcon" class="fa-solid fa-trophy"></i>
+                        </div>
+                        <div class="text-xs font-mono-tech uppercase text-amber-200">ĐIỂM THƯỞNG CỘNG THÊM</div>
+                        <div id="certBonusPoints" class="text-3xl sm:text-4xl font-extrabold font-mono-tech text-amber-300 my-1">+0.5 ĐIỂM</div>
+                        <div id="certHintCountTag" class="text-[11px] px-2 py-0.5 rounded bg-slate-900/80 text-emerald-300 border border-emerald-500/30">
+                            Số lần dùng gợi ý: 0
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary Stats Grid -->
+                <div class="grid grid-cols-3 gap-2.5 sm:gap-4 mb-6 text-center text-xs relative z-10">
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3">
+                        <div class="text-slate-400">Hồ sơ đã duyệt</div>
+                        <div class="text-base sm:text-lg font-extrabold text-cyan-300 font-mono-tech mt-0.5">15 / 15</div>
+                    </div>
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3">
+                        <div class="text-slate-400">Độ uy tín tích lũy</div>
+                        <div id="certFinalCredibility" class="text-base sm:text-lg font-extrabold text-emerald-400 font-mono-tech mt-0.5">250</div>
+                    </div>
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3">
+                        <div class="text-slate-400">Thời gian hoàn thành</div>
+                        <div id="certTimeText" class="text-base sm:text-lg font-extrabold text-amber-300 font-mono-tech mt-0.5">09:30</div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-wrap items-center justify-center gap-3 relative z-10">
+                    <button onclick="resetGameSameStudent()" class="px-5 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-extrabold text-xs sm:text-sm shadow-lg shadow-cyan-500/25 flex items-center gap-2 transition cursor-pointer">
+                        <i class="fa-solid fa-shuffle"></i>
+                        <span>CHƠI LƯỢT MỚI (ĐỔI BỘ ĐỀ NGẪU NHIÊN KHÁC)</span>
+                    </button>
+                    <button onclick="changeStudentAccount()" class="px-4 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 font-bold text-xs sm:text-sm flex items-center gap-2 transition cursor-pointer">
+                        <i class="fa-solid fa-user-pen"></i>
+                        <span>ĐỔI HỌC SINH KHÁC</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="w-full text-center py-2.5 px-4 text-[11px] text-slate-400 border-t border-slate-900/80 bg-slate-950/75 relative z-10">
+        Trạm Kiểm Định Kiến Thức Địa Lí 12 • Ngân hàng 45 Hồ sơ Ngẫu nhiên & Bảo mật chống AI • Tương thích K12Online & Di động
+    </footer>
+
+    <script>
+        /* */
+        /* ============================================================================
+           1. WEB AUDIO SYNTHESIZER (Dramatic Scanner, Stamp, Alert & Fanfare Sounds)
+           ============================================================================ */
+        let audioCtx = null;
+        let soundEnabled = true;
+
+        function initAudioContext() {
+            if (!audioCtx) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioContextClass) {
+                    audioCtx = new AudioContextClass();
+                }
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function toggleAudio() {
+            soundEnabled = !soundEnabled;
+            const icon = document.getElementById('soundIcon');
+            const text = document.getElementById('soundText');
+            if (soundEnabled) {
+                icon.className = 'fa-solid fa-volume-high text-sm';
+                if (text) text.textContent = 'Âm thanh: BẬT';
+                playSoundEffect('scan');
+            } else {
+                icon.className = 'fa-solid fa-volume-xmark text-sm text-rose-400';
+                if (text) text.textContent = 'Âm thanh: TẮT';
+            }
+        }
+
+        function playSoundEffect(type) {
+            if (!soundEnabled) return;
+            try {
+                initAudioContext();
+                if (!audioCtx) return;
+
+                const now = audioCtx.currentTime;
+
+                if (type === 'scan') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(240, now);
+                    osc.frequency.exponentialRampToValueAtTime(780, now + 0.18);
+                    osc.frequency.exponentialRampToValueAtTime(420, now + 0.32);
+
+                    gain.gain.setValueAtTime(0.08, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.34);
+
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.35);
+                } 
+                else if (type === 'stamp') {
+                    const osc1 = audioCtx.createOscillator();
+                    const gain1 = audioCtx.createGain();
+                    osc1.type = 'triangle';
+                    osc1.frequency.setValueAtTime(140, now);
+                    osc1.frequency.exponentialRampToValueAtTime(45, now + 0.14);
+                    gain1.gain.setValueAtTime(0.25, now);
+                    gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+                    osc1.connect(gain1);
+                    gain1.connect(audioCtx.destination);
+                    osc1.start(now);
+                    osc1.stop(now + 0.16);
+
+                    const notes = [523.25, 659.25, 783.99, 1046.5];
+                    notes.forEach((freq, idx) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(freq, now + 0.08 + idx * 0.06);
+                        gain.gain.setValueAtTime(0.1, now + 0.08 + idx * 0.06);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35 + idx * 0.06);
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.start(now + 0.08 + idx * 0.06);
+                        osc.stop(now + 0.36 + idx * 0.06);
+                    });
+                } 
+                else if (type === 'error') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(190, now);
+                    osc.frequency.setValueAtTime(145, now + 0.15);
+
+                    gain.gain.setValueAtTime(0.14, now);
+                    gain.gain.exponentialRampToValueAtTime(0.005, now + 0.38);
+
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.4);
+                } 
+                else if (type === 'hint') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(880, now);
+                    gain.gain.setValueAtTime(0.1, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.32);
+                }
+                else if (type === 'tick') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(960, now);
+                    gain.gain.setValueAtTime(0.04, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.08);
+                }
+                else if (type === 'victory') {
+                    const chord = [523.25, 659.25, 783.99, 1046.5, 1318.5];
+                    chord.forEach((freq, i) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(freq, now + i * 0.09);
+                        gain.gain.setValueAtTime(0.14, now + i * 0.09);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.09 + 0.6);
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.start(now + i * 0.09);
+                        osc.stop(now + i * 0.09 + 0.62);
+                    });
+                }
+            } catch (e) {
+                console.warn("Audio effect skipped:", e);
+            }
+        }
+
+        /* */
+        /* ============================================================================
+           2. MASTER BANK OF 45 GEOGRAPHY 12 CARDS (15 Per Level)
+           Each game session randomly draws 5 cards from Level 1, 5 from Level 2, and 5 from Level 3!
+           ============================================================================ */
+        const QUESTION_BANK = {
+            level1: [
+                {
+                    id: "L1-01", level: 1, levelName: "CẤP 1: CƠ BẢN", precision: "Độ nhiễu: Thấp",
+                    topic: "Bài 1: Vị trí địa lí & Phạm vi lãnh thổ",
+                    statement: "Việt Nam nằm hoàn toàn trong vùng nội chí tuyến bán cầu Bắc, thuộc khu vực khí hậu nhiệt đới gió mùa châu Á và tiếp giáp với Biển Đông thông ra Thái Bình Dương.",
+                    isValid: true,
+                    hint: "Nhớ lại vĩ độ phần đất liền nước ta (từ 8°34'B đến 23°23'B) đều nằm giữa Xích đạo và chí tuyến Bắc.",
+                    explanation: "Thông tin CHÍNH XÁC (SGK trang 5). Nước ta nằm hoàn toàn trong vùng nội chí tuyến bán cầu Bắc và thuộc khu vực khí hậu nhiệt đới gió mùa châu Á."
+                },
+                {
+                    id: "L1-02", level: 1, levelName: "CẤP 1: CƠ BẢN", precision: "Độ nhiễu: Thấp",
+                    topic: "Bài 1: Vị trí địa lí",
+                    statement: "Trên đất liền, Việt Nam nằm trên bán đảo Đông Dương và tiếp giáp với 4 quốc gia láng giềng là Trung Quốc, Lào, Cam-pu-chia và Thái Lan.",
+                    isValid: false,
+                    hint: "Kiểm tra mục 1. Vị trí địa lí (SGK trang 5): Trên đất liền nước ta tiếp giáp với những quốc gia nào? Có giáp Thái Lan trên đất liền không?",
+                    explanation: "Dữ liệu SAI! Trên đất liền nước ta chỉ tiếp giáp với 3 quốc gia là Trung Quốc, Lào và Cam-pu-chia (Thái Lan chỉ tiếp giáp trên vùng biển)."
+                },
+                {
+                    id: "L1-03", level: 1, levelName: "CẤP 1: CƠ BẢN", precision: "Độ nhiễu: Thấp",
+                    topic: "Bài 1: Phạm vi lãnh thổ (Vùng biển)",
+                    statement: "Theo Luật Biển Việt Nam năm 2012, vùng biển nước ta tại Biển Đông có diện tích khoảng 1 triệu km² và bao gồm 5 bộ phận.",
+                    isValid: true,
+                    hint: "Xem mục Vùng biển (SGK trang 7): Tổng diện tích vùng biển Việt Nam và số bộ phận cấu thành vùng biển.",
+                    explanation: "Thông tin CHÍNH XÁC (SGK trang 7). Vùng biển nước ta có diện tích khoảng 1 triệu km² gồm 5 bộ phận: nội thủy, lãnh hải, vùng tiếp giáp lãnh hải, vùng đặc quyền kinh tế và thềm lục địa."
+                },
+                {
+                    id: "L1-04", level: 1, levelName: "CẤP 1: CƠ BẢN", precision: "Độ nhiễu: Thấp",
+                    topic: "Bài 1: Phạm vi lãnh thổ (Vùng biển)",
+                    statement: "Theo Luật Biển Việt Nam năm 2012, vùng lãnh hải của nước ta có chiều rộng 24 hải lí tính từ đường cơ sở ra phía biển và là biên giới quốc gia trên biển.",
+                    isValid: false,
+                    hint: "Kiểm tra sơ đồ mặt cắt các vùng biển Việt Nam (Hình 1.2 trang 7): Chiều rộng của riêng vùng Lãnh hải là bao nhiêu hải lí?",
+                    explanation: "Dữ liệu SAI SỐ LIỆU! Lãnh hải chỉ có chiều rộng 12 hải lí tính từ đường cơ sở ra phía biển (tổng lãnh hải và vùng tiếp giáp lãnh hải mới là 24 hải lí)."
+                },
+                {
+                    id: "L1-05", level: 1, levelName: "CẤP 1: CƠ BẢN", precision: "Độ nhiễu: Thấp",
+                    topic: "Bài 1: Phạm vi lãnh thổ (Vùng đất)",
+                    statement: "Tổng diện tích đất của các đơn vị hành chính Việt Nam là hơn 331 nghìn km² (theo Niên giám thống kê Việt Nam năm 2024).",
+                    isValid: true,
+                    hint: "Đối chiếu mục Vùng đất (SGK trang 7): Tổng diện tích phần đất liền và các hải đảo của nước ta là bao nhiêu?",
+                    explanation: "Thông tin CHÍNH XÁC (SGK trang 7). Tổng diện tích đất của các đơn vị hành chính nước ta là hơn 331 nghìn km²."
+                },
+                {
+                    id: "L1-06", level: 1, levelName: "CẤP 1: CƠ BẢN", precision: "Độ nhiễu: Thấp",
+                    topic: "Bài 2: Thiên nhiên nhiệt đới ẩm gió mùa (Khí hậu)",
+                    statement: "Toàn bộ lãnh thổ nước ta nhận được lượng bức xạ mặt trời lớn, cán cân bức xạ quanh năm dương; nhiệt độ trung bình năm trên cả nước đều trên 20°C (trừ vùng núi cao).",
+                    isValid: true,
+                    hint: "Đối chiếu mục 1. Khí hậu (SGK trang 10) về lượng bức xạ mặt trời và nền nhiệt độ trung bình năm.",
+                    explanation: "Thông tin CHÍNH XÁC (SGK trang 10). Cán cân bức xạ quanh năm dương, nhiệt độ trung bình năm đều trên 20°C (trừ vùng núi cao)."
+                },
+                {
+                    id: "L1-07", level: 1, levelName: "CẤP 1: CƠ BẢN", precision: "Độ nhiễu: Thấp",
+                    topic: "Bài 2: Thiên nhiên nhiệt đới ẩm gió mùa (Mưa & Độ ẩm)",
+                    statement: "Tổng lượng mưa năm ở nước ta rất thấp, trung bình chỉ từ 500 – 800 mm/năm và độ ẩm tương đối của không khí trung bình hằng năm dưới 60%.",
+                    isValid: false,
+                    hint: "Xem cuối trang 10 SGK: Nước ta có khí hậu nhiệt đới ẩm gió mùa thì lượng mưa năm và độ ẩm không khí lớn hay nhỏ?",
+                    explanation: "Dữ liệu SAI SỐ LIỆU! Tổng lượng mưa năm ở nước ta lớn (từ 1.500 – 2.000 mm/năm, vùng núi cao và sườn đón gió đạt 3.500 – 4.000 mm) và độ ẩm tương đối từ 80 – 85%."
+                },
+                {
+                    id: "L1-08", level: 1, levelName: "CẤP 1: CƠ BẢN", precision: "Độ nhiễu: Thấp",
+                    topic: "Bài 2: Thiên nhiên nhiệt đới ẩm gió mùa (Địa hình)",
+                    statement: "Quá trình xâm thực – bồi tụ là quá trình chính trong sự hình thành và biến đổi địa hình Việt Nam hiện nay.",
+                    isValid: true,
+                    hint: "Xem mục 2. Địa hình (SGK trang 14): Biểu hiện của địa hình nhiệt đới ẩm gió mùa ở miền đồi núi và vùng đồng bằng.",
+                    explanation: "Thông tin CHÍNH XÁC (SGK trang 14). Xâm thực mạnh ở miền đồi núi và bồi tụ nhanh ở vùng đồng bằng hạ lưu sông là quá trình chính."
+                },
+                {
+                    id: "L1-09", level: 1, levelName: "CẤP 1: CƠ BẢN", precision: "Độ nhiễu: Thấp",
+                    topic: "Bài 2: Thiên nhiên nhiệt đới ẩm gió mùa (Đất & Sinh vật)",
+                    statement: "Trong vùng khí hậu nhiệt đới ẩm, quá trình hình thành đất đặc trưng ở nước ta là quá trình feralit. Hệ sinh thái rừng nhiệt đới ẩm gió mùa phát triển trên đất feralit là cảnh quan tiêu biểu.",
+                    isValid: true,
+                    hint: "Xem mục 4. Đất và mục 5. Sinh vật (SGK trang 15) về quá trình hình thành đất và cảnh quan tiêu biểu.",
+                    explanation: "Thông tin CHÍNH XÁC (SGK trang 15). Đất feralit đỏ vàng và hệ sinh thái rừng nhiệt đới ẩm gió mùa phát triển trên đất feralit là cảnh quan tiêu biểu."
+                },
+                {
+                    id: "L1-10", level: 1, levelName: "CẤP 1: CƠ BẢN", precision: "Độ nhiễu: Thấp",
+                    topic: "Bài 2: Thiên nhiên nhiệt đới ẩm gió mùa (Sông ngòi)",
+                    statement: "Do nước ta có chế độ mưa theo mùa nên chế độ nước sông trong năm chia thành hai mùa: mùa lũ tương ứng với mùa khô và mùa cạn tương ứng với mùa mưa.",
+                    isValid: false,
+                    hint: "Đọc kỹ mục 3. Sông ngòi (SGK trang 14): Mùa lũ của sông ngòi trùng với mùa nào của khí hậu?",
+                    explanation: "Dữ liệu BỊ NGƯỢC! Mùa lũ trùng với mùa mưa và mùa cạn trùng với mùa khô."
+                },
+                {
+                    id: "L1-11", level: 1, levelName: "CẤP 1: CƠ BẢN", precision: "Độ nhiễu: Thấp",
+                    topic: "Bài 3: Sự phân hóa đa dạng của thiên nhiên",
+                    statement: "Theo độ cao, thiên nhiên nước ta được phân hóa thành 3 đai cao gồm: đai nhiệt đới gió mùa, đai cận xích đạo gió mùa trên núi và đai hàn đới gió mùa trên núi.",
+                    isValid: false,
+                    hint: "Cẩn thận tên gọi của các đai cao (SGK trang 20): Hai đai phía trên đai nhiệt đới gió mùa mang tên là gì?",
+                    explanation: "Dữ liệu BỊ TRÁO KHÁI NIỆM! Ba đai cao đúng là: Đai nhiệt đới gió mùa, Đai cận nhiệt đới gió mùa trên núi và Đai ôn đới gió mùa trên núi."
+                },
+                {
+                    id: "L1-12", level: 1, levelName: "CẤP 1: CƠ BẢN", precision: "Độ nhiễu: Thấp",
+                    topic: "Bài 3: Thiên nhiên phân hóa theo chiều bắc - nam",
+                    statement: "Ranh giới tự nhiên phân chia phần lãnh thổ phía Bắc và phần lãnh thổ phía Nam của nước ta là dãy núi Bạch Mã (khoảng vĩ tuyến 16°B).",
+                    isValid: true,
+                    hint: "Xem mục 1. Thiên nhiên phân hóa theo chiều bắc – nam (SGK trang 17): Dãy núi nào là ranh giới giữa hai miền khí hậu Bắc - Nam?",
+                    explanation: "Thông tin CHÍNH XÁC (SGK trang 17). Dãy núi Bạch Mã là ranh giới tự nhiên giữa phần lãnh thổ phía Bắc và phần lãnh thổ phía Nam."
+                },
+                {
+                    id: "L1-13", level: 1, levelName: "CẤP 1: CƠ BẢN", precision: "Độ nhiễu: Thấp",
+                    topic: "Bài 3: Thiên nhiên phân hóa theo chiều đông - tây",
+                    statement: "Từ đông sang tây (từ biển vào đất liền), thiên nhiên nước ta có sự phân hóa thành 3 dải rõ rệt: vùng biển và thềm lục địa, vùng đồng bằng, vùng đồi núi.",
+                    isValid: true,
+                    hint: "Xem mục 2. Thiên nhiên phân hóa theo chiều đông – tây (SGK trang 19).",
+                    explanation: "Thông tin CHÍNH XÁC (SGK trang 19). Thiên nhiên phân hóa từ đông sang tây thành 3 dải rõ rệt."
+                },
+                {
+                    id: "L1-14", level: 1, levelName: "CẤP 1: CƠ BẢN", precision: "Độ nhiễu: Thấp",
+                    topic: "Bài 3: Các miền địa lí tự nhiên",
+                    statement: "Thiên nhiên Việt Nam được phân hóa thành 4 miền địa lí tự nhiên lớn: Miền Bắc Bộ, Miền Bắc Trung Bộ, Miền Nam Trung Bộ và Miền Tây Nam Bộ.",
+                    isValid: false,
+                    hint: "Xem mục II. Các miền địa lí tự nhiên (SGK trang 20-24): Nước ta có mấy miền địa lí tự nhiên?",
+                    explanation: "Dữ liệu SAI! Nước ta được chia thành 3 miền địa lí tự nhiên: (1) Miền Bắc và Đông Bắc Bắc Bộ; (2) Miền Tây Bắc và Bắc Trung Bộ; (3) Miền Nam Trung Bộ và Nam Bộ."
+                },
+                {
+                    id: "L1-15", level: 1, levelName: "CẤP 1: CƠ BẢN", precision: "Độ nhiễu: Thấp",
+                    topic: "Bài 1: Ảnh hưởng của vị trí địa lí",
+                    statement: "Việt Nam nằm ở vị trí tiếp giáp, nối liền lục địa với đại dương và liền kề với hai vành đai sinh khoáng lớn là Thái Bình Dương và Địa Trung Hải nên tài nguyên khoáng sản khá phong phú.",
+                    isValid: true,
+                    hint: "Đối chiếu mục 1. Ảnh hưởng đến tự nhiên (SGK trang 5 và trang 8) về các vành đai sinh khoáng.",
+                    explanation: "Thông tin CHÍNH XÁC (SGK trang 5, 8). Vị trí liền kề vành đai sinh khoáng Thái Bình Dương và Địa Trung Hải giúp nước ta có tài nguyên khoáng sản phong phú, đa dạng."
+                }
+            ],
+
+            /* */
+            level2: [
+                {
+                    id: "L2-01", level: 2, levelName: "CẤP 2: CHUYÊN SÂU", precision: "Độ nhiễu: Trung bình",
+                    topic: "Bài 2: Hoạt động của gió mùa đông",
+                    statement: "Nửa đầu mùa đông, gió mùa Đông Bắc di chuyển qua biển vào miền Bắc nước ta gây thời tiết lạnh ẩm, mưa phùn; nửa sau mùa đông di chuyển qua lục địa gây thời tiết lạnh khô.",
+                    isValid: false,
+                    hint: "Đọc kỹ đoạn Gió mùa đông (SGK trang 11): Thứ tự tính chất thời tiết giữa 'nửa đầu mùa đông' và 'nửa sau mùa đông' có bị đảo ngược không?",
+                    explanation: "Dữ liệu BỊ TRÁO THỨ TỰ! Nửa đầu mùa đông gió đi qua lục địa nên gây thời tiết LẠNH KHÔ; nửa sau mùa đông gió di chuyển lệch về phía đông qua biển mới gây thời tiết LẠNH ẨM, có mưa phùn."
+                },
+                {
+                    id: "L2-02", level: 2, levelName: "CẤP 2: CHUYÊN SÂU", precision: "Độ nhiễu: Trung bình",
+                    topic: "Bài 2: Hoạt động của Tín phong bán cầu Bắc",
+                    statement: "Từ Đà Nẵng (khoảng vĩ tuyến 16°B) trở vào, Tín phong bán cầu Bắc thổi theo hướng đông bắc chiếm ưu thế, gây mưa cho khu vực Trung Bộ và là nguyên nhân tạo nên mùa khô ở Tây Nguyên và Nam Bộ.",
+                    isValid: true,
+                    hint: "Kiểm tra trang 12 SGK: Khi gió mùa Đông Bắc suy yếu và bị chặn lại ở dãy Bạch Mã, loại gió nào chiếm ưu thế từ Đà Nẵng trở vào?",
+                    explanation: "Thông tin CHÍNH XÁC (SGK trang 12). Tín phong bán cầu Bắc thổi hướng đông bắc đón bức chắn địa hình gây mưa cho Trung Bộ và tạo mùa khô cho Tây Nguyên, Nam Bộ."
+                },
+                {
+                    id: "L2-03", level: 2, levelName: "CẤP 2: CHUYÊN SÂU", precision: "Độ nhiễu: Trung bình",
+                    topic: "Bài 2: Thiên nhiên nhiệt đới ẩm gió mùa (Sông ngòi)",
+                    statement: "Nước ta có khoảng 2.360 con sông có chiều dài trên 10 km; tổng lượng nước khoảng 839 tỉ m³/năm và tổng lượng phù sa khoảng 200 triệu tấn/năm.",
+                    isValid: true,
+                    hint: "Kiểm tra các con số thống kê tại mục 3. Sông ngòi (SGK trang 14): Số lượng sông >10 km, tổng lượng nước và tổng lượng phù sa.",
+                    explanation: "Thông tin CHÍNH XÁC 100% theo số liệu SGK trang 14."
+                },
+                {
+                    id: "L2-04", level: 2, levelName: "CẤP 2: CHUYÊN SÂU", precision: "Độ nhiễu: Trung bình",
+                    topic: "Bài 3: Thiên nhiên phân hóa theo chiều bắc - nam",
+                    statement: "Phần lãnh thổ phía Nam (từ dãy núi Bạch Mã trở vào) mang sắc thái khí hậu cận xích đạo gió mùa, nhiệt độ trung bình năm trên 25°C và biên độ nhiệt năm lớn (trên 10°C).",
+                    isValid: false,
+                    hint: "Đọc kỹ phần lãnh thổ phía Nam (SGK trang 17): Ở vùng cận xích đạo nóng quanh năm, biên độ nhiệt năm lớn hay nhỏ?",
+                    explanation: "Dữ liệu SAI CHI TIẾT! Phần lãnh thổ phía Nam có nhiệt độ trung bình năm trên 25°C nhưng biên độ nhiệt năm NHỎ (không quá 4 – 5°C), không phải trên 10°C."
+                },
+                {
+                    id: "L2-05", level: 2, levelName: "CẤP 2: CHUYÊN SÂU", precision: "Độ nhiễu: Trung bình",
+                    topic: "Bài 3: Các miền địa lí tự nhiên",
+                    statement: "Miền Bắc và Đông Bắc Bắc Bộ có địa hình đồi núi thấp chiếm ưu thế với các dãy núi hướng vòng cung; đây là miền có mùa đông lạnh điển hình nhất nước ta.",
+                    isValid: true,
+                    hint: "Xem mục 1. Miền Bắc và Đông Bắc Bắc Bộ (SGK trang 21-22): Hướng các cánh cung tạo điều kiện cho gió mùa Đông Bắc xâm nhập sâu như thế nào?",
+                    explanation: "Thông tin CHÍNH XÁC (SGK trang 21-22). Do địa hình đồi núi thấp và các dãy núi hướng vòng cung đón gió mùa Đông Bắc nên miền này có mùa đông lạnh điển hình nhất."
+                },
+                {
+                    id: "L2-06", level: 2, levelName: "CẤP 2: CHUYÊN SÂU", precision: "Độ nhiễu: Trung bình",
+                    topic: "Bài 2: Hoạt động của gió mùa hạ",
+                    statement: "Đầu mùa hạ, khối khí nhiệt đới ẩm từ Bắc Ấn Độ Dương qua vịnh Ben-gan thổi theo hướng tây nam gây mưa lớn cho đồng bằng ven biển Trung Bộ, sau đó vượt dãy Trường Sơn gây khô nóng cho Nam Bộ và Tây Nguyên.",
+                    isValid: false,
+                    hint: "Kiểm tra mục Gió mùa hạ (SGK trang 12): Khi gió từ vịnh Ben-gan thổi theo hướng tây nam thì sườn nào đón gió gây mưa, sườn nào khuất gió bị khô nóng (gió phơn)?",
+                    explanation: "Dữ liệu BỊ ĐẢO NGƯỢC VÙNG! Khối khí từ Bắc Ấn Độ Dương gây mưa lớn cho Nam Bộ và Tây Nguyên, khi vượt qua dãy Trường Sơn tràn xuống đồng bằng ven biển Trung Bộ và phần phía nam Tây Bắc mới trở nên khô nóng (gió Lào)."
+                },
+                {
+                    id: "L2-07", level: 2, levelName: "CẤP 2: CHUYÊN SÂU", precision: "Độ nhiễu: Trung bình",
+                    topic: "Bài 2: Hoạt động của gió mùa hạ",
+                    statement: "Vào giữa và cuối mùa hạ, gió mùa Tây Nam xuất phát từ áp cao cận chí tuyến bán cầu Nam hoạt động mạnh; ở đồng bằng sông Hồng có gió đông nam từ biển thổi vào.",
+                    isValid: true,
+                    hint: "Xem đoạn 2 mục Gió mùa hạ (SGK trang 12): Nguồn gốc của gió mùa Tây Nam vào giữa và cuối mùa hạ và hướng gió ở đồng bằng sông Hồng.",
+                    explanation: "Thông tin CHÍNH XÁC (SGK trang 12). Áp thấp Bắc Bộ hút gió làm gió mùa Tây Nam chuyển hướng thành gió đông nam ẩm ướt thổi vào đồng bằng sông Hồng."
+                },
+                {
+                    id: "L2-08", level: 2, levelName: "CẤP 2: CHUYÊN SÂU", precision: "Độ nhiễu: Trung bình",
+                    topic: "Bài 1: Phạm vi lãnh thổ (Vùng biển)",
+                    statement: "Vùng đặc quyền kinh tế là vùng biển tiếp liền và nằm ngoài lãnh hải Việt Nam, hợp với lãnh hải thành một vùng biển có chiều rộng 200 hải lí tính từ đường cơ sở.",
+                    isValid: true,
+                    hint: "Đối chiếu mục Vùng biển và Hình 1.2 (SGK trang 7): Tổng chiều rộng của Lãnh hải và Vùng đặc quyền kinh tế tính từ đường cơ sở là bao nhiêu hải lí?",
+                    explanation: "Thông tin CHÍNH XÁC (SGK trang 7). Hợp với lãnh hải (12 hải lí) tạo thành vùng biển rộng 200 hải lí tính từ đường cơ sở."
+                },
+                {
+                    id: "L2-09", level: 2, levelName: "CẤP 2: CHUYÊN SÂU", precision: "Độ nhiễu: Trung bình",
+                    topic: "Bài 2: Thiên nhiên nhiệt đới ẩm gió mùa (Đất)",
+                    statement: "Trong quá trình feralit ở nước ta, mưa nhiều làm tích tụ các chất ba-dơ dễ tan (Ca²⁺, Mg²⁺, Na⁺, K⁺) và rửa trôi hoàn toàn ô-xít sắt (Fe₂O₃) cùng ô-xít nhôm (Al₂O₃), làm đất có màu đỏ vàng.",
+                    isValid: false,
+                    hint: "Đọc kỹ mục 4. Đất (SGK trang 15): Mưa nhiều rửa trôi chất nào và tích tụ chất nào để tạo nên màu đỏ vàng của đất feralit?",
+                    explanation: "Dữ liệu BỊ TRÁO CƠ CHẾ HÓA HỌC! Mưa nhiều RỬA TRÔI các chất ba-dơ dễ tan làm đất chua, đồng thời TÍCH TỤ ô-xít sắt (Fe₂O₃) và ô-xít nhôm (Al₂O₃) tạo ra màu đỏ vàng."
+                },
+                {
+                    id: "L2-10", level: 2, levelName: "CẤP 2: CHUYÊN SÂU", precision: "Độ nhiễu: Trung bình",
+                    topic: "Bài 3: Thiên nhiên phân hóa theo chiều bắc - nam",
+                    statement: "Ở phần lãnh thổ phía Bắc, do ảnh hưởng của gió mùa Đông Bắc nên có một mùa đông lạnh với 2 – 3 tháng nhiệt độ trung bình dưới 18°C, biên độ nhiệt năm cao.",
+                    isValid: true,
+                    hint: "Xem mục Phần lãnh thổ phía Bắc (SGK trang 17): Số tháng có nhiệt độ trung bình dưới 18°C là bao nhiêu tháng?",
+                    explanation: "Thông tin CHÍNH XÁC (SGK trang 17). Phần lãnh thổ phía Bắc có 2 – 3 tháng nhiệt độ trung bình dưới 18°C."
+                },
+                {
+                    id: "L2-11", level: 2, levelName: "CẤP 2: CHUYÊN SÂU", precision: "Độ nhiễu: Trung bình",
+                    topic: "Bài 3: Thiên nhiên phân hóa theo chiều đông - tây",
+                    statement: "Thềm lục địa nước ta thu hẹp nhất ở vịnh Bắc Bộ và vịnh Thái Lan, nhưng lại mở rộng và nông ở đoạn ven biển Nam Trung Bộ.",
+                    isValid: false,
+                    hint: "Đọc kỹ đoạn Vùng biển và thềm lục địa (SGK trang 19): Thềm lục địa mở rộng ở đâu và thu hẹp nhất ở đoạn ven biển nào?",
+                    explanation: "Dữ liệu BỊ HOÁN ĐỔI! Thềm lục địa MỞ RỘNG ở vịnh Bắc Bộ, vùng biển Nam Bộ và vịnh Thái Lan; còn THU HẸP nhất là ở đoạn ven biển Nam Trung Bộ."
+                },
+                {
+                    id: "L2-12", level: 2, levelName: "CẤP 2: CHUYÊN SÂU", precision: "Độ nhiễu: Trung bình",
+                    topic: "Bài 3: Thiên nhiên phân hóa theo chiều đông - tây",
+                    statement: "Do tác động của gió mùa và hướng của dãy Trường Sơn, khi Đông Trường Sơn có mùa mưa vào thu – đông thì khu vực Tây Nguyên lại là mùa khô; khi Tây Nguyên vào mùa mưa thì sườn Đông Trường Sơn nhiều nơi chịu tác động của gió Tây khô nóng.",
+                    isValid: true,
+                    hint: "Xem đoạn cuối trang 19 SGK về sự đối lập mùa mưa và mùa khô giữa Đông Trường Sơn và Tây Nguyên.",
+                    explanation: "Thông tin CHÍNH XÁC (SGK trang 19). Dãy Trường Sơn tạo nên sự đối lập sâu sắc về mùa mưa và mùa khô giữa Đông Trường Sơn và Tây Nguyên."
+                },
+                {
+                    id: "L2-13", level: 2, levelName: "CẤP 2: CHUYÊN SÂU", precision: "Độ nhiễu: Trung bình",
+                    topic: "Bài 3: Miền Nam Trung Bộ và Nam Bộ",
+                    statement: "Ở miền Nam Trung Bộ và Nam Bộ, các cao nguyên badan xếp tầng tập trung chủ yếu ở đồng bằng sông Cửu Long, còn hệ thống kênh rạch chằng chịt tập trung ở Tây Nguyên.",
+                    isValid: false,
+                    hint: "Xem mục 3. Miền Nam Trung Bộ và Nam Bộ (SGK trang 24): Cao nguyên badan xếp tầng và hệ thống kênh rạch chằng chịt thuộc về khu vực nào?",
+                    explanation: "Dữ liệu BỊ TRÁO ĐỊA DANH! Các cao nguyên badan xếp tầng tập trung ở Tây Nguyên và rìa Đông Nam Bộ; còn hệ thống kênh rạch chằng chịt thuộc về đồng bằng sông Cửu Long."
+                },
+                {
+                    id: "L2-14", level: 2, levelName: "CẤP 2: CHUYÊN SÂU", precision: "Độ nhiễu: Trung bình",
+                    topic: "Bài 3: Miền Bắc và Đông Bắc Bắc Bộ",
+                    statement: "Ranh giới phía tây và tây nam của miền Bắc và Đông Bắc Bắc Bộ chạy dọc theo hữu ngạn sông Hồng và rìa phía tây nam đồng bằng sông Hồng.",
+                    isValid: true,
+                    hint: "Kiểm tra mục 1. Miền Bắc và Đông Bắc Bắc Bộ (SGK trang 20): Ranh giới phân chia miền này với miền Tây Bắc và Bắc Trung Bộ nằm ở đâu?",
+                    explanation: "Thông tin CHÍNH XÁC (SGK trang 20). Hữu ngạn sông Hồng và rìa phía tây nam đồng bằng sông Hồng là ranh giới tự nhiên của miền."
+                },
+                {
+                    id: "L2-15", level: 2, levelName: "CẤP 2: CHUYÊN SÂU", precision: "Độ nhiễu: Trung bình",
+                    topic: "Bài 3: Đai ôn đới gió mùa trên núi",
+                    statement: "Đai ôn đới gió mùa trên núi có độ cao từ 2.600 m trở lên (chỉ có ở dãy Hoàng Liên Sơn), quanh năm nhiệt độ dưới 15°C, mùa đông xuống dưới 5°C và đất chủ yếu là đất mùn thô.",
+                    isValid: true,
+                    hint: "Xem mục Đai ôn đới gió mùa trên núi (SGK trang 20): Độ cao, nền nhiệt độ và loại đất đặc trưng.",
+                    explanation: "Thông tin CHÍNH XÁC (SGK trang 20). Thực vật ôn đới chiếm ưu thế như đỗ quyên, lãnh sam, thiết sam trên nền đất mùn thô."
+                }
+            ],
+
+            /* */
+            level3: [
+                {
+                    id: "L3-01", level: 3, levelName: "CẤP 3: SIÊU VI ĐIỂM", precision: "Cảnh báo: Sai lệch chi tiết cực nhỏ!",
+                    topic: "Bài 1: Các điểm cực trên đất liền",
+                    statement: "Trên đất liền, điểm cực Bắc ở vĩ độ 23°23'B tại xã Lũng Cú (tỉnh Tuyên Quang); điểm cực Nam ở 8°34'B tại xã Đất Mũi (tỉnh Cà Mau); điểm cực Tây ở 102°09'Đ tại xã Sín Thầu (tỉnh Điện Biên); điểm cực Đông ở 109°28'Đ tại xã Đại Lãnh (tỉnh Phú Yên).",
+                    isValid: false,
+                    hint: "Soi thật kỹ tên tỉnh của 4 điểm cực trong trang 5 SGK! Điểm cực Bắc ở xã Lũng Cú, tỉnh Tuyên Quang là đúng theo bản SGK mới, nhưng còn tỉnh của điểm cực Đông tại xã Đại Lãnh là tỉnh nào?",
+                    explanation: "Phát hiện CHI TIẾT VI ĐIỂM BỊ THAY ĐỔI! Theo đúng SGK trang 5: Điểm cực Đông ở kinh độ 109°28'Đ tại xã Đại Lãnh thuộc tỉnh KHÁNH HÒA (hồ sơ đã tráo thành tỉnh Phú Yên)."
+                },
+                {
+                    id: "L3-02", level: 3, levelName: "CẤP 3: SIÊU VI ĐIỂM", precision: "Cảnh báo: Sai lệch chi tiết cực nhỏ!",
+                    topic: "Bài 1: Phạm vi lãnh thổ & Đơn vị hành chính",
+                    statement: "Theo Nghị quyết số 202/2025/QH15 ngày 12 tháng 6 năm 2025 của Quốc hội về việc sắp xếp đơn vị hành chính cấp tỉnh, nước ta có 34 đơn vị hành chính cấp tỉnh, bao gồm 28 tỉnh và 06 thành phố.",
+                    isValid: true,
+                    hint: "Đối chiếu từng con số tại đoạn văn gần cuối mục 2. Phạm vi lãnh thổ (SGK trang 8): Số nghị quyết, tổng số 34 đơn vị hành chính cấp tỉnh (28 tỉnh và 06 thành phố).",
+                    explanation: "Thông tin CHÍNH XÁC TUYỆT ĐỐI từng con số theo cập nhật mới trong SGK Địa lí 12 trang 8."
+                },
+                {
+                    id: "L3-03", level: 3, levelName: "CẤP 3: SIÊU VI ĐIỂM", precision: "Cảnh báo: Sai lệch chi tiết cực nhỏ!",
+                    topic: "Bài 3: Thiên nhiên phân hóa theo độ cao",
+                    statement: "Đai nhiệt đới gió mùa ở miền Bắc có độ cao trung bình từ khoảng 900 – 1.000 m trở xuống, còn ở miền Nam có độ cao trung bình từ khoảng 600 – 700 m trở xuống.",
+                    isValid: false,
+                    hint: "Đọc thật kỹ dấu cộng đầu tiên của mục 3. Thiên nhiên phân hóa theo độ cao (SGK trang 20): Độ cao 600–700 m và 900–1.000 m thuộc về miền nào?",
+                    explanation: "Dữ liệu BỊ HOÁN ĐỔI VI ĐIỂM! Do miền Bắc có mùa đông lạnh nên ranh giới đai nhiệt đới gió mùa thấp hơn (từ 600 – 700 m trở xuống), còn ở miền Nam nền nhiệt cao hơn nên lên tới 900 – 1.000 m trở xuống."
+                },
+                {
+                    id: "L3-04", level: 3, levelName: "CẤP 3: SIÊU VI ĐIỂM", precision: "Cảnh báo: Sai lệch chi tiết cực nhỏ!",
+                    topic: "Bài 3: Đai cận nhiệt đới gió mùa trên núi",
+                    statement: "Trong đai cận nhiệt đới gió mùa trên núi, từ độ cao 600 – 700 m đến 1.600 – 1.700 m hình thành đất mùn thô; còn trên độ cao 1.600 – 1.700 m đến 2.600 m hình thành đất feralit có mùn.",
+                    isValid: false,
+                    hint: "Kiểm tra mục Đai cận nhiệt đới gió mùa trên núi (SGK trang 20): Loại đất nào nằm ở tầng thấp (600–700 m đến 1.600–1.700 m) và loại đất nào nằm ở tầng cao hơn (trên 1.600–1.700 m)?",
+                    explanation: "Phát hiện TRÁO VỊ TRÍ LOẠI ĐẤT! Ở độ cao 600 – 700 m đến 1.600 – 1.700 m là ĐẤT FERALIT CÓ MÙN; còn trên 1.600 – 1.700 m là ĐẤT MÙN (đất mùn thô thuộc đai ôn đới trên 2.600 m)."
+                },
+                {
+                    id: "L3-05", level: 3, levelName: "CẤP 3: SIÊU VI ĐIỂM", precision: "Cảnh báo: Sai lệch chi tiết cực nhỏ!",
+                    topic: "Bài 3: Miền Tây Bắc và Bắc Trung Bộ",
+                    statement: "Miền Tây Bắc và Bắc Trung Bộ là miền duy nhất ở nước ta có địa hình núi cao với đầy đủ ba đai cao; dãy Hoàng Liên Sơn làm cho mùa đông ở Tây Bắc ấm và ngắn hơn ở Đông Bắc.",
+                    isValid: true,
+                    hint: "Đối chiếu mục 2. Miền Tây Bắc và Bắc Trung Bộ (hộp Em có biết và phần Khí hậu trang 22): Dãy Hoàng Liên Sơn ngăn cản gió mùa Đông Bắc tác động ra sao?",
+                    explanation: "Thông tin CHÍNH XÁC TUYỆT ĐỐI (SGK trang 22)."
+                },
+                {
+                    id: "L3-06", level: 3, levelName: "CẤP 3: SIÊU VI ĐIỂM", precision: "Cảnh báo: Sai lệch chi tiết cực nhỏ!",
+                    topic: "Bài 1: Phạm vi lãnh thổ (Vùng đất & Hải đảo)",
+                    statement: "Vùng đất Việt Nam bao gồm toàn bộ phần đất liền và phần đất nổi của hàng nghìn hòn đảo, quần đảo trên Biển Đông, trong đó có quần đảo Hoàng Sa (tỉnh Khánh Hòa) và quần đảo Trường Sa (thành phố Đà Nẵng).",
+                    isValid: false,
+                    hint: "Soi kỹ đơn vị hành chính trực thuộc của hai quần đảo Hoàng Sa và Trường Sa tại mục Vùng đất (SGK trang 7)!",
+                    explanation: "Phát hiện HOÁN ĐỔI ĐƠN VỊ HÀNH CHÍNH! Quần đảo Hoàng Sa thuộc thành phố ĐÀ NẴNG và quần đảo Trường Sa thuộc tỉnh KHÁNH HÒA (hồ sơ đã tráo ngược hai địa danh này)."
+                },
+                {
+                    id: "L3-07", level: 3, levelName: "CẤP 3: SIÊU VI ĐIỂM", precision: "Cảnh báo: Sai lệch chi tiết cực nhỏ!",
+                    topic: "Bài 1: Phạm vi lãnh thổ (Thềm lục địa)",
+                    statement: "Trong trường hợp mép ngoài của rìa lục địa vượt quá 200 hải lí tính từ đường cơ sở thì thềm lục địa nơi đó được kéo dài không quá 350 hải lí tính từ đường cơ sở hoặc không quá 100 hải lí tính từ đường đẳng sâu 2.500 m.",
+                    isValid: true,
+                    hint: "Kiểm tra từng con số trong đoạn Thềm lục địa (SGK trang 8): 200 hải lí, 350 hải lí, 100 hải lí và đường đẳng sâu 2.500 m.",
+                    explanation: "Thông tin CHÍNH XÁC TUYỆT ĐỐI từng con số theo Luật Biển và SGK trang 8."
+                },
+                {
+                    id: "L3-08", level: 3, levelName: "CẤP 3: SIÊU VI ĐIỂM", precision: "Cảnh báo: Sai lệch chi tiết cực nhỏ!",
+                    topic: "Bài 2: Bảng số liệu khí tượng (Bảng 2.1)",
+                    statement: "Theo Bảng 2.1 (SGK trang 10), trạm khí tượng Quy Nhơn (Gia Lai) có nhiệt độ trung bình năm là 27,1°C và tổng số giờ nắng năm đạt 2.445 giờ — cao hơn tổng số giờ nắng của trạm Cà Mau (2.186 giờ).",
+                    isValid: true,
+                    hint: "Đối chiếu Bảng 2.1 (SGK trang 10): Kiểm tra nhiệt độ trung bình năm và số giờ nắng của trạm Quy Nhơn (Gia Lai) so với Cà Mau.",
+                    explanation: "Thông tin CHÍNH XÁC TUYỆT ĐỐI theo Bảng 2.1 SGK trang 10 (Quy Nhơn: 27,1°C và 2.445 giờ nắng; Cà Mau: 27,1°C và 2.186 giờ nắng)."
+                },
+                {
+                    id: "L3-09", level: 3, levelName: "CẤP 3: SIÊU VI ĐIỂM", precision: "Cảnh báo: Sai lệch chi tiết cực nhỏ!",
+                    topic: "Bài 2: Bản chất gió mùa Đông Bắc (Em có biết)",
+                    statement: "Áp cao Xi-bia nằm ở khoảng vĩ độ 50°B; tại trung tâm áp cao này vào mùa đông không khí rất lạnh và khô với nhiệt độ trung bình khoảng -40°C đến -15°C, trị số áp suất lên tới 1.040 – 1.060 mb.",
+                    isValid: true,
+                    hint: "Xem hộp 'Em có biết?' tại trang 11 SGK: Kiểm tra vĩ độ 50°B, mức nhiệt -40°C đến -15°C và áp suất 1.040 – 1.060 mb.",
+                    explanation: "Thông tin CHÍNH XÁC TUYỆT ĐỐI theo hộp thông tin khoa học SGK trang 11."
+                },
+                {
+                    id: "L3-10", level: 3, levelName: "CẤP 3: SIÊU VI ĐIỂM", precision: "Cảnh báo: Sai lệch chi tiết cực nhỏ!",
+                    topic: "Bài 2: Địa hình nhiệt đới ẩm gió mùa",
+                    statement: "Hệ quả của quá trình xâm thực mạnh ở miền đồi núi là sự bồi tụ ở vùng đồng bằng; đồng bằng sông Hồng và đồng bằng sông Cửu Long có những khu vực hằng năm mở rộng ra biển từ vài chục đến hàng trăm ki-lô-mét như vùng Kim Sơn, Bình Minh (Ninh Bình).",
+                    isValid: false,
+                    hint: "Soi thật kỹ đơn vị đo độ dài ở đoạn cuối mục 2. Địa hình (SGK trang 14): Hằng năm đồng bằng mở rộng ra biển từ vài chục đến hàng trăm MÉT hay KI-LÔ-MÉT?",
+                    explanation: "Phát hiện BẪY ĐƠN VỊ ĐO LƯỜNG! Hằng năm đồng bằng mở rộng ra biển từ vài chục đến hàng trăm MÉT (không phải hàng trăm ki-lô-mét), và địa danh trong SGK trang 14 là vùng Kim Đông, Bình Minh (Ninh Bình)."
+                },
+                {
+                    id: "L3-11", level: 3, levelName: "CẤP 3: SIÊU VI ĐIỂM", precision: "Cảnh báo: Sai lệch chi tiết cực nhỏ!",
+                    topic: "Bài 3: Thiên nhiên phân hóa theo độ cao",
+                    statement: "Ở đai nhiệt đới gió mùa, tổng nhiệt độ hoạt động năm trên 7.500°C và mùa hạ nóng; còn ở đai cận nhiệt đới gió mùa trên núi, tổng nhiệt độ hoạt động năm dao động từ 4.500°C đến 7.500°C và mùa hạ mát (nhiệt độ trung bình tháng dưới 25°C).",
+                    isValid: true,
+                    hint: "Kiểm tra các chỉ số tổng nhiệt độ hoạt động năm (7.500°C và 4.500°C – 7.500°C) tại trang 20 SGK.",
+                    explanation: "Thông tin CHÍNH XÁC TUYỆT ĐỐI theo SGK trang 20."
+                },
+                {
+                    id: "L3-12", level: 3, levelName: "CẤP 3: SIÊU VI ĐIỂM", precision: "Cảnh báo: Sai lệch chi tiết cực nhỏ!",
+                    topic: "Bài 3: Miền Bắc và Đông Bắc Bắc Bộ",
+                    statement: "Ở miền Bắc và Đông Bắc Bắc Bộ, các sông lớn như sông Hồng, sông Chảy chảy theo hướng vòng cung; còn ở khu vực Đông Bắc có các sông như sông Lô, sông Gâm, sông Lục Nam chảy theo hướng tây bắc – đông nam.",
+                    isValid: false,
+                    hint: "Đọc kỹ đoạn Sông ngòi của Miền Bắc và Đông Bắc Bắc Bộ (SGK trang 22): Hướng chảy của sông Hồng, sông Chảy và hướng chảy của sông Gâm, sông Lục Nam có bị tráo nhau không?",
+                    explanation: "Phát hiện TRÁO HƯỚNG SÔNG NGÒI! Sông Hồng, sông Chảy chảy theo hướng TÂY BẮC – ĐÔNG NAM; còn các sông ở khu vực Đông Bắc như sông Lô, sông Gâm, sông Lục Nam chảy theo hướng VÒNG CUNG."
+                },
+                {
+                    id: "L3-13", level: 3, levelName: "CẤP 3: SIÊU VI ĐIỂM", precision: "Cảnh báo: Sai lệch chi tiết cực nhỏ!",
+                    topic: "Bài 3: Đỉnh núi Phan-xi-păng (Em có biết)",
+                    statement: "Độ cao của đỉnh núi Phan-xi-păng công bố năm 1909 bằng phương pháp đo áp kế là 3.143 m; đến năm 2019, Cục Đo đạc, Bản đồ và Thông tin địa lí Việt Nam đã công bố độ cao của đỉnh núi là 3.147 m.",
+                    isValid: true,
+                    hint: "Kiểm tra hộp 'Em có biết?' trang 22 SGK: Số năm 1909 (3.143 m) và năm 2019 (3.147 m).",
+                    explanation: "Thông tin CHÍNH XÁC TUYỆT ĐỐI theo hộp Em có biết trang 22 SGK."
+                },
+                {
+                    id: "L3-14", level: 3, levelName: "CẤP 3: SIÊU VI ĐIỂM", precision: "Cảnh báo: Sai lệch chi tiết cực nhỏ!",
+                    topic: "Bài 3: Khoáng sản ba miền địa lí tự nhiên",
+                    statement: "Trong miền Tây Bắc và Bắc Trung Bộ có các khoáng sản tiêu biểu là sắt ở Hà Tĩnh, Lào Cai; đồng ở Sơn La, Lào Cai; a-pa-tít ở Lào Cai; crôm ở Thanh Hóa và thiếc ở Nghệ An.",
+                    isValid: true,
+                    hint: "Đối chiếu đoạn Khoáng sản của Miền Tây Bắc và Bắc Trung Bộ ở đầu trang 24 SGK.",
+                    explanation: "Thông tin CHÍNH XÁC TUYỆT ĐỐI từng loại khoáng sản và địa phương phân bố (SGK trang 24)."
+                },
+                {
+                    id: "L3-15", level: 3, levelName: "CẤP 3: SIÊU VI ĐIỂM", precision: "Cảnh báo: Sai lệch chi tiết cực nhỏ!",
+                    topic: "Bài 1: Cực Nam & Cực Đông trên vùng biển",
+                    statement: "Trên vùng biển, phạm vi lãnh thổ của nước ta còn kéo dài xuống tới khoảng vĩ độ 6°50'B và từ khoảng kinh độ 101°Đ tới trên 117°20'Đ tại Biển Đông.",
+                    isValid: true,
+                    hint: "Kiểm tra câu cuối đoạn 2 mục 1. Vị trí địa lí (SGK trang 5) về tọa độ phạm vi vùng biển nước ta.",
+                    explanation: "Thông tin CHÍNH XÁC TUYỆT ĐỐI (SGK trang 5)."
+                }
+            ]
+        };
+
+        /* */
+        /* ============================================================================
+           3. GAME STATE & RANDOMIZED SESSION GENERATOR
+           ============================================================================ */
+        let INSPECTION_CARDS = [];
+        let studentName = "";
+        let studentClass = "";
+        let currentIndex = 0;
+        let credibility = 100;
+        let currentStreak = 0;
+        let usedSystemHint = false;
+        let totalHintsUsed = 0;
+        let cardUsedHint = false;
+        let cardResolved = false;
+
+        // Anti-AI variables
+        let cardTimer = null;
+        let timeLeft = 20;
+        const MAX_CARD_TIME = 20;
+        let focusViolations = 0;
+        let isGameActive = false;
+
+        function shuffleArray(arr) {
+            const copy = [...arr];
+            for (let i = copy.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [copy[i], copy[j]] = [copy[j], copy[i]];
+            }
+            return copy;
+        }
+
+        // Builds a unique 15-card deck (5 per level) for every play session
+        function buildRandomizedDeck() {
+            const pickL1 = shuffleArray(QUESTION_BANK.level1).slice(0, 5);
+            const pickL2 = shuffleArray(QUESTION_BANK.level2).slice(0, 5);
+            const pickL3 = shuffleArray(QUESTION_BANK.level3).slice(0, 5);
+
+            INSPECTION_CARDS = [...pickL1, ...pickL2, ...pickL3].map((item, idx) => ({
+                ...item,
+                sessionCode: `GEO-${String(idx + 1).padStart(2, '0')}-${item.id}`
+            }));
+        }
+
+        /* ============================================================================
+           4. ANTI-AI CANVAS TEXT RENDERER (Prevents Copy-Paste & Confuses AI OCR)
+           ============================================================================ */
+        function renderStatementToCanvas(text) {
+            const canvas = document.getElementById('statementCanvas');
+            const wrapper = document.getElementById('canvasStatementWrapper');
+            if (!canvas || !wrapper) return;
+
+            const dpr = window.devicePixelRatio || 1;
+            const containerWidth = Math.max(260, wrapper.clientWidth - 20);
+            const fontSize = containerWidth < 460 ? 15.5 : 18.5;
+            const lineHeight = Math.round(fontSize * 1.58);
+            const fontSpec = `600 ${fontSize}px 'Be Vietnam Pro', sans-serif`;
+
+            const tempCtx = canvas.getContext('2d');
+            tempCtx.font = fontSpec;
+
+            // Wrap text into lines
+            const words = (`"${text}"`).split(' ');
+            const lines = [];
+            let currentLine = words[0];
+
+            for (let i = 1; i < words.length; i++) {
+                const testLine = currentLine + " " + words[i];
+                const metrics = tempCtx.measureText(testLine);
+                if (metrics.width > containerWidth - 24) {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                } else {
+                    currentLine = testLine;
+                }
+            }
+            lines.push(currentLine);
+
+            const canvasHeight = Math.max(115, lines.length * lineHeight + 34);
+            canvas.width = containerWidth * dpr;
+            canvas.height = canvasHeight * dpr;
+            canvas.style.width = `${containerWidth}px`;
+            canvas.style.height = `${canvasHeight}px`;
+
+            const ctx = canvas.getContext('2d');
+            ctx.scale(dpr, dpr);
+
+            // 1. Dark Cyber Background
+            ctx.fillStyle = '#091224';
+            ctx.fillRect(0, 0, containerWidth, canvasHeight);
+
+            // 2. Anti-OCR Security Mesh & Micro Noise Lines
+            ctx.strokeStyle = 'rgba(0, 243, 255, 0.08)';
+            ctx.lineWidth = 1;
+            for (let x = 0; x < containerWidth; x += 22) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x + 12, canvasHeight);
+                ctx.stroke();
+            }
+            for (let y = 0; y < canvasHeight; y += 18) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(containerWidth, y + (y % 2 === 0 ? 6 : -6));
+                ctx.stroke();
+            }
+
+            // 3. Diagonal Dynamic Watermark (Student Identity + Anti-AI Tag)
+            ctx.save();
+            ctx.font = "700 12px 'JetBrains Mono', monospace";
+            ctx.fillStyle = "rgba(56, 189, 248, 0.09)";
+            ctx.translate(containerWidth / 2, canvasHeight / 2);
+            ctx.rotate(-0.08);
+            const watermark = `BẢO MẬT K12 • ${studentName.toUpperCase()} (${studentClass.toUpperCase()}) • CẤM AI QUÉT`;
+            ctx.fillText(watermark, -ctx.measureText(watermark).width / 2, -18);
+            ctx.fillText(watermark, -ctx.measureText(watermark).width / 2, 26);
+            ctx.restore();
+
+            // 4. Render Statement Text with Micro-Wave Offset
+            ctx.font = fontSpec;
+            ctx.fillStyle = '#f8fafc';
+            ctx.textBaseline = 'top';
+
+            const startY = Math.max(14, (canvasHeight - lines.length * lineHeight) / 2);
+            lines.forEach((line, idx) => {
+                const yPos = startY + idx * lineHeight;
+                ctx.fillText(line, 12, yPos);
+            });
+
+            // 5. Subtle Foreground Interference Dots ( disrupts automated OCR )
+            for (let i = 0; i < 38; i++) {
+                ctx.fillStyle = i % 2 === 0 ? 'rgba(0, 243, 255, 0.16)' : 'rgba(16, 185, 129, 0.16)';
+                const rx = Math.random() * containerWidth;
+                const ry = Math.random() * canvasHeight;
+                ctx.fillRect(rx, ry, 2, 2);
+            }
+        }
+
+        // Redraw canvas on window resize
+        window.addEventListener('resize', () => {
+            if (isGameActive && INSPECTION_CARDS[currentIndex]) {
+                renderStatementToCanvas(INSPECTION_CARDS[currentIndex].statement);
+            }
+        });
+
+        /* */
+        /* ============================================================================
+           5. ANTI-AI TAB/FOCUS MONITOR & COUNTDOWN TIMER
+           ============================================================================ */
+        function startCardCountdown() {
+            stopCardCountdown();
+            timeLeft = MAX_CARD_TIME;
+            updateTimerUI();
+
+            cardTimer = setInterval(() => {
+                if (cardResolved || !isGameActive) return;
+                timeLeft--;
+                updateTimerUI();
+
+                if (timeLeft <= 5 && timeLeft > 0) {
+                    playSoundEffect('tick');
+                }
+
+                if (timeLeft <= 0) {
+                    stopCardCountdown();
+                    handleTimeExpired();
+                }
+            }, 1000);
+        }
+
+        function stopCardCountdown() {
+            if (cardTimer) {
+                clearInterval(cardTimer);
+                cardTimer = null;
+            }
+        }
+
+        function updateTimerUI() {
+            const timerText = document.getElementById('timerText');
+            const timerBar = document.getElementById('timerBar');
+            const timerIconBox = document.getElementById('timerIconBox');
+            if (!timerText || !timerBar) return;
+
+            const pct = Math.max(0, Math.round((timeLeft / MAX_CARD_TIME) * 100));
+            timerText.textContent = `${timeLeft}s`;
+            timerBar.style.width = `${pct}%`;
+
+            if (timeLeft > 10) {
+                timerText.className = "text-cyan-300 font-bold";
+                timerBar.className = "h-full bg-cyan-400 transition-all duration-500";
+                timerIconBox.className = "w-9 h-9 rounded-lg bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shrink-0";
+            } else if (timeLeft > 5) {
+                timerText.className = "text-amber-300 font-bold";
+                timerBar.className = "h-full bg-amber-400 transition-all duration-500";
+                timerIconBox.className = "w-9 h-9 rounded-lg bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0";
+            } else {
+                timerText.className = "text-rose-400 font-extrabold animate-pulse";
+                timerBar.className = "h-full bg-rose-500 transition-all duration-500";
+                timerIconBox.className = "w-9 h-9 rounded-lg bg-rose-500/20 border border-rose-500/40 flex items-center justify-center text-rose-400 shrink-0 animate-bounce";
+            }
+        }
+
+        function handleTimeExpired() {
+            if (cardResolved) return;
+            const card = INSPECTION_CARDS[currentIndex];
+            currentStreak = 0;
+            credibility = Math.max(0, credibility - 5);
+            playSoundEffect('error');
+            activateHintMode(card, "HẾT THỜI GIAN SUY NGHĨ (20 GIÂY) - ĐÃ BẬT CHẾ ĐỘ SOI CHỨNG CỨ!");
+        }
+
+        // Detect Tab Switching / App Switching to AI tools
+        document.addEventListener('visibilitychange', () => {
+            if (!isGameActive || cardResolved) return;
+            const wrapper = document.getElementById('canvasStatementWrapper');
+
+            if (document.hidden) {
+                if (wrapper) wrapper.classList.add('anti-ai-blur');
+            } else {
+                if (wrapper) wrapper.classList.remove('anti-ai-blur');
+                focusViolations++;
+                const warnBar = document.getElementById('antiAiWarningBar');
+                const warnBadge = document.getElementById('focusViolationBadge');
+                const warnText = document.getElementById('antiAiWarningText');
+
+                if (warnBar && warnBadge) {
+                    warnBar.classList.remove('hidden');
+                    warnBadge.textContent = `Vi phạm: ${focusViolations} lần`;
+                }
+
+                if (focusViolations >= 2) {
+                    // Activate hint mode penalty if student repeatedly switches tabs to consult AI
+                    const card = INSPECTION_CARDS[currentIndex];
+                    if (warnText) {
+                        warnText.innerHTML = `Phát hiện rời màn hình lần ${focusViolations}! Hệ thống tự động chuyển về mức thưởng <b>+0.25đ</b> để đảm bảo công bằng.`;
+                    }
+                    activateHintMode(card, "CẢNH BÁO RỜI MÀN HÌNH NHIỀU LẦN - KÍCH HOẠT CHẾ ĐỘ HỖ TRỢ SGK");
+                } else {
+                    playSoundEffect('error');
+                }
+            }
+        });
+
+        // Block PrintScreen / Ctrl+C / DevTools shortcuts
+        window.addEventListener('keydown', (e) => {
+            if (
+                e.key === 'PrintScreen' ||
+                (e.ctrlKey && (e.key === 'c' || e.key === 'C' || e.key === 'u' || e.key === 'U' || e.key === 's' || e.key === 'S')) ||
+                (e.metaKey && e.shiftKey && (e.key === '3' || e.key === '4' || e.key === 's' || e.key === 'S'))
+            ) {
+                e.preventDefault();
+                const wrapper = document.getElementById('canvasStatementWrapper');
+                if (wrapper) {
+                    wrapper.classList.add('anti-ai-blur');
+                    setTimeout(() => wrapper.classList.remove('anti-ai-blur'), 1200);
+                }
+            }
+        });
+
+        /* */
+        /* ============================================================================
+           6. CORE GAMEPLAY FUNCTIONS
+           ============================================================================ */
+        function startInspectionGame() {
+            const nameInput = document.getElementById('studentNameInput').value.trim();
+            const classInput = document.getElementById('studentClassInput').value.trim();
+            const errorBox = document.getElementById('loginErrorMsg');
+
+            if (!nameInput || !classInput) {
+                errorBox.classList.remove('hidden');
+                playSoundEffect('error');
+                return;
+            }
+
+            errorBox.classList.add('hidden');
+            studentName = nameInput;
+            studentClass = classInput;
+
+            // Update header inspector badge
+            document.getElementById('displayStudentName').textContent = studentName;
+            document.getElementById('displayStudentClass').textContent = "Lớp: " + studentClass;
+            document.getElementById('inspectorBadge').classList.remove('hidden');
+            document.getElementById('inspectorBadge').classList.add('flex');
+            document.getElementById('headerLevelBadge').classList.remove('hidden');
+
+            // Build a brand-new randomized 15-card deck from the 45-card master bank
+            buildRandomizedDeck();
+
+            // Initialize game state
+            currentIndex = 0;
+            credibility = 100;
+            currentStreak = 0;
+            usedSystemHint = false;
+            totalHintsUsed = 0;
+            focusViolations = 0;
+            isGameActive = true;
+
+            document.getElementById('antiAiWarningBar').classList.add('hidden');
+
+            // Switch screens
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('certificateScreen').classList.add('hidden');
+            const gameScreen = document.getElementById('gameScreen');
+            gameScreen.classList.remove('hidden');
+            gameScreen.classList.add('flex');
+
+            updateDashboardStats();
+            loadCurrentCard(true);
+        }
+
+        function updateDashboardStats() {
+            const total = INSPECTION_CARDS.length;
+            const currentNum = currentIndex + 1;
+            const pct = Math.min(100, Math.round((currentNum / total) * 100));
+
+            document.getElementById('progressCounter').textContent = `${currentNum}/${total}`;
+            document.getElementById('progressBar').style.width = `${pct}%`;
+            document.getElementById('credibilityScore').textContent = credibility;
+            document.getElementById('streakBadge').textContent = `Chuỗi: ${currentStreak}`;
+
+            const card = INSPECTION_CARDS[currentIndex];
+            const headerLvl = document.getElementById('headerLevelBadge');
+            const levelTitle = document.getElementById('levelTitleText');
+
+            headerLvl.textContent = `CẤP ĐỘ ${card.level}`;
+            levelTitle.textContent = card.levelName;
+
+            if (card.level === 1) {
+                levelTitle.className = "text-[11px] font-mono-tech font-bold px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-400/30";
+            } else if (card.level === 2) {
+                levelTitle.className = "text-[11px] font-mono-tech font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-400/30";
+            } else {
+                levelTitle.className = "text-[11px] font-mono-tech font-bold px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-400/40 animate-pulse";
+            }
+
+            // Update Bonus Track Status
+            const bonusText = document.getElementById('bonusStatusText');
+            const bonusIconBox = document.getElementById('bonusIconBox');
+            if (!usedSystemHint) {
+                bonusText.textContent = "+0.5đ (Chưa dùng gợi ý)";
+                bonusText.className = "text-xs sm:text-sm font-bold text-emerald-300 truncate";
+                bonusIconBox.className = "w-9 h-9 rounded-lg bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0";
+            } else {
+                bonusText.textContent = `+0.25đ (Đã soi gợi ý: ${totalHintsUsed})`;
+                bonusText.className = "text-xs sm:text-sm font-bold text-amber-300 truncate";
+                bonusIconBox.className = "w-9 h-9 rounded-lg bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0";
+            }
+        }
+
+        function loadCurrentCard(animateIn = true) {
+            cardResolved = false;
+            cardUsedHint = false;
+
+            const card = INSPECTION_CARDS[currentIndex];
+            const viewport = document.getElementById('scannerViewport');
+
+            // Reset UI overlays
+            document.getElementById('stampOverlay').classList.add('hidden');
+            document.getElementById('evidenceDrawer').classList.add('hidden');
+            document.getElementById('nextActionContainer').classList.add('hidden');
+            document.getElementById('cardAttemptTag').classList.add('hidden');
+            document.getElementById('manualHintBtn').classList.remove('hidden');
+            document.getElementById('laserBeam').classList.remove('hidden');
+
+            // Enable decision buttons
+            setDecisionButtonsState(true);
+
+            // Populate card metadata
+            document.getElementById('cardCodeLabel').textContent = `HỒ SƠ #${card.sessionCode}`;
+            document.getElementById('cardTopicBadge').textContent = card.topic;
+            document.getElementById('cardPrecisionNote').textContent = card.precision;
+
+            // Render statement onto Anti-AI Canvas
+            setTimeout(() => {
+                renderStatementToCanvas(card.statement);
+            }, 20);
+
+            updateDashboardStats();
+            startCardCountdown();
+
+            if (animateIn) {
+                viewport.classList.remove('card-exit', 'card-enter');
+                void viewport.offsetWidth;
+                viewport.classList.add('card-enter');
+                playSoundEffect('scan');
+            }
+        }
+
+        function setDecisionButtonsState(enabled) {
+            const btnApprove = document.getElementById('btnApprove');
+            const btnReject = document.getElementById('btnReject');
+            if (enabled) {
+                btnApprove.disabled = false;
+                btnReject.disabled = false;
+                btnApprove.classList.remove('opacity-40', 'pointer-events-none');
+                btnReject.classList.remove('opacity-40', 'pointer-events-none');
+            } else {
+                btnApprove.disabled = true;
+                btnReject.disabled = true;
+                btnApprove.classList.add('opacity-40', 'pointer-events-none');
+                btnReject.classList.add('opacity-40', 'pointer-events-none');
+            }
+        }
+
+        // Triggered when student manually clicks "Xem gợi ý SGK"
+        function openManualHint() {
+            if (cardResolved) return;
+            const card = INSPECTION_CARDS[currentIndex];
+            activateHintMode(card, "ĐÃ BẬT GỢI Ý TỪ HỆ THỐNG");
+        }
+
+        // Triggered either on wrong choice, timeout, tab violation, or manual hint button
+        function activateHintMode(card, customHeader) {
+            if (!cardUsedHint) {
+                cardUsedHint = true;
+                usedSystemHint = true;
+                totalHintsUsed++;
+            }
+
+            playSoundEffect('hint');
+            updateDashboardStats();
+
+            document.getElementById('cardAttemptTag').classList.remove('hidden');
+            document.getElementById('manualHintBtn').classList.add('hidden');
+
+            const drawer = document.getElementById('evidenceDrawer');
+            const drawerIcon = document.getElementById('drawerIcon');
+            const drawerTitle = document.getElementById('drawerTitle');
+            const drawerTag = document.getElementById('drawerTag');
+            const drawerText = document.getElementById('drawerText');
+            const nextContainer = document.getElementById('nextActionContainer');
+
+            drawer.className = "mt-4 rounded-xl p-4 border bg-amber-950/45 border-amber-500/50 transition-all";
+            drawerIcon.className = "w-9 h-9 rounded-lg bg-amber-500/20 border border-amber-400/40 text-amber-300 flex items-center justify-center shrink-0 mt-0.5 text-lg";
+            drawerIcon.innerHTML = '<i class="fa-solid fa-magnifying-glass-location"></i>';
+
+            drawerTitle.textContent = customHeader || "CHẾ ĐỘ SOI LẠI CHỨNG CỨ (GỢI Ý HỆ THỐNG)";
+            drawerTitle.className = "font-extrabold text-sm sm:text-base uppercase tracking-wide text-amber-300";
+
+            drawerTag.textContent = "HÃY KIỂM ĐỊNH LẠI";
+            drawerTag.className = "text-[11px] font-mono-tech px-2 py-0.5 rounded bg-amber-500/20 text-amber-200 border border-amber-400/30";
+
+            drawerText.innerHTML = `<b class="text-amber-200">Gợi ý đối chiếu SGK:</b> ${card.hint} <br><span class="text-xs text-amber-300/90 mt-1 inline-block"><i class="fa-solid fa-rotate mr-1"></i>Hãy dựa vào chứng cứ trên và nhấn chọn lại quyết định kiểm định của bạn!</span>`;
+
+            nextContainer.classList.add('hidden');
+            drawer.classList.remove('hidden');
+        }
+
+        function submitDecision(playerSaysValid) {
+            if (cardResolved) return;
+
+            const card = INSPECTION_CARDS[currentIndex];
+            const isCorrect = (playerSaysValid === card.isValid);
+            const viewport = document.getElementById('scannerViewport');
+
+            if (isCorrect) {
+                // CORRECT INSPECTION!
+                cardResolved = true;
+                stopCardCountdown();
+                setDecisionButtonsState(false);
+                document.getElementById('manualHintBtn').classList.add('hidden');
+                document.getElementById('laserBeam').classList.add('hidden');
+
+                // Update credibility score
+                currentStreak++;
+                const pointsEarned = cardUsedHint ? 10 : (20 + Math.min(currentStreak * 2, 10));
+                credibility += pointsEarned;
+                updateDashboardStats();
+
+                // Show Stamp Animation
+                const stampOverlay = document.getElementById('stampOverlay');
+                const stampBox = document.getElementById('stampBox');
+                const stampCodeText = document.getElementById('stampCodeText');
+                const stampMainText = document.getElementById('stampMainText');
+
+                const randomVerifyHash = Math.floor(1000 + Math.random() * 9000);
+                stampCodeText.textContent = `MÃ KĐ: #VN-${randomVerifyHash}`;
+
+                if (card.isValid) {
+                    stampBox.className = "border-4 border-emerald-400 text-emerald-400 bg-slate-950/95 px-4 py-2 rounded-xl font-mono-tech font-extrabold uppercase tracking-widest text-center shadow-2xl stamp-animate";
+                    stampMainText.className = "text-base sm:text-xl border-y border-emerald-400/50 my-0.5 py-0.5";
+                    stampMainText.textContent = "DỮ LIỆU CHUẨN";
+                } else {
+                    stampBox.className = "border-4 border-cyan-400 text-cyan-300 bg-slate-950/95 px-4 py-2 rounded-xl font-mono-tech font-extrabold uppercase tracking-widest text-center shadow-2xl stamp-animate";
+                    stampMainText.className = "text-base sm:text-xl border-y border-cyan-400/50 my-0.5 py-0.5";
+                    stampMainText.textContent = "ĐÃ BẮT LỖI SAI";
+                }
+
+                stampOverlay.classList.remove('hidden');
+                playSoundEffect('stamp');
+
+                // Show explanation in drawer
+                const drawer = document.getElementById('evidenceDrawer');
+                const drawerIcon = document.getElementById('drawerIcon');
+                const drawerTitle = document.getElementById('drawerTitle');
+                const drawerTag = document.getElementById('drawerTag');
+                const drawerText = document.getElementById('drawerText');
+                const nextContainer = document.getElementById('nextActionContainer');
+                const nextBtnText = document.getElementById('nextBtnText');
+
+                drawer.className = "mt-4 rounded-xl p-4 border bg-emerald-950/45 border-emerald-500/50 transition-all";
+                drawerIcon.className = "w-9 h-9 rounded-lg bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 flex items-center justify-center shrink-0 mt-0.5 text-lg";
+                drawerIcon.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+
+                drawerTitle.textContent = `KIỂM ĐỊNH THÀNH CÔNG (+${pointsEarned} UY TÍN)`;
+                drawerTitle.className = "font-extrabold text-sm sm:text-base uppercase tracking-wide text-emerald-300";
+
+                drawerTag.textContent = `MÃ ĐÓNG DẤU #VN-${randomVerifyHash}`;
+                drawerTag.className = "text-[11px] font-mono-tech px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-200 border border-emerald-400/30";
+
+                drawerText.innerHTML = `<b class="text-emerald-200">Kết luận chuyên môn:</b> ${card.explanation}`;
+
+                if (currentIndex === INSPECTION_CARDS.length - 1) {
+                    nextBtnText.textContent = "NHẬN CHỨNG NHẬN & ĐIỂM THƯỞNG";
+                } else {
+                    nextBtnText.textContent = `TIẾP TỤC QUÉT THẺ #${currentIndex + 2}/${INSPECTION_CARDS.length}`;
+                }
+
+                nextContainer.classList.remove('hidden');
+                drawer.classList.remove('hidden');
+            } else {
+                // WRONG CHOICE -> TRIGGER EVIDENCE RE-EXAMINATION MODE
+                currentStreak = 0;
+                credibility = Math.max(0, credibility - 5);
+                playSoundEffect('error');
+
+                viewport.classList.remove('shake-error');
+                void viewport.offsetWidth;
+                viewport.classList.add('shake-error');
+
+                activateHintMode(card, "PHÁN ĐOÁN CHƯA CHÍNH XÁC - KÍCH HOẠT SOI CHỨNG CỨ!");
+            }
+        }
+
+        function advanceToNextCard() {
+            const viewport = document.getElementById('scannerViewport');
+            viewport.classList.remove('card-enter');
+            viewport.classList.add('card-exit');
+
+            setTimeout(() => {
+                if (currentIndex < INSPECTION_CARDS.length - 1) {
+                    currentIndex++;
+                    loadCurrentCard(true);
+                } else {
+                    showFinalCertificate();
+                }
+            }, 340);
+        }
+
+        /* */
+        /* ============================================================================
+           7. CERTIFICATE GENERATION & END SCREEN LOGIC
+           ============================================================================ */
+        function showFinalCertificate() {
+            isGameActive = false;
+            stopCardCountdown();
+            playSoundEffect('victory');
+
+            document.getElementById('gameScreen').classList.add('hidden');
+            document.getElementById('gameScreen').classList.remove('flex');
+            document.getElementById('headerLevelBadge').classList.add('hidden');
+
+            const certScreen = document.getElementById('certificateScreen');
+            certScreen.classList.remove('hidden');
+
+            // Populate Student Info
+            document.getElementById('certStudentName').textContent = studentName;
+            document.getElementById('certStudentClass').textContent = studentClass;
+
+            const randomCertNum = Math.floor(10000 + Math.random() * 90000);
+            document.getElementById('certSerialCode').textContent = `GEO12-${randomCertNum}`;
+            document.getElementById('certFinalCredibility').textContent = credibility;
+
+            const now = new Date();
+            const pad = (n) => String(n).padStart(2, '0');
+            document.getElementById('certTimeText').textContent = `${pad(now.getHours())}:${pad(now.getMinutes())} - ${pad(now.getDate())}/${pad(now.getMonth() + 1)}/${now.getFullYear()}`;
+
+            const certHeaderTitle = document.getElementById('certHeaderTitle');
+            const certEvaluationDesc = document.getElementById('certEvaluationDesc');
+            const certBonusPoints = document.getElementById('certBonusPoints');
+            const certHintCountTag = document.getElementById('certHintCountTag');
+            const certCard = document.getElementById('certificateCard');
+            const certRewardBox = document.getElementById('certRewardBox');
+            const certBadgeIcon = document.getElementById('certBadgeIcon');
+
+            if (!usedSystemHint) {
+                // EXCELLENT COMPLETION (+0.5 Points)
+                certHeaderTitle.textContent = "CHỨNG NHẬN HOÀN THÀNH XUẤT SẮC KHÓA HỌC ĐỊA LÍ TỰ NHIÊN";
+                certHeaderTitle.className = "text-xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-yellow-300 to-emerald-300 uppercase tracking-wide mt-1";
+                certEvaluationDesc.innerHTML = `Kiểm định viên <b class="text-white">${studentName}</b> đã xuất sắc vượt qua cả 3 cấp độ kiểm định (bao gồm cấp độ Siêu vi điểm) và xác thực chuẩn xác <b>15/15 hồ sơ Địa lí Tự nhiên ngẫu nhiên</b> mà <span class="text-emerald-300 font-bold">không cần sử dụng bất kỳ gợi ý nào</span> của hệ thống.`;
+                certBonusPoints.textContent = "+0.5 ĐIỂM";
+                certBonusPoints.className = "text-3xl sm:text-4xl font-extrabold font-mono-tech text-amber-300 my-1";
+                certHintCountTag.textContent = "Không dùng gợi ý (0 lần)";
+                certHintCountTag.className = "text-[11px] px-2.5 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-400/40 font-semibold";
+                certCard.className = "tech-panel rounded-2xl p-5 sm:p-8 border-2 border-amber-400/70 relative overflow-hidden shadow-2xl";
+                certRewardBox.className = "bg-gradient-to-br from-amber-500/25 via-yellow-500/15 to-emerald-500/20 border-2 border-amber-400/70 rounded-xl p-4 text-center flex flex-col items-center justify-center h-full";
+                certBadgeIcon.className = "fa-solid fa-trophy";
+            } else {
+                // STANDARD COMPLETION WITH HINTS (+0.25 Points)
+                certHeaderTitle.textContent = "CHỨNG NHẬN HOÀN THÀNH KHÓA HỌC ĐỊA LÍ TỰ NHIÊN";
+                certHeaderTitle.className = "text-xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-sky-300 to-emerald-300 uppercase tracking-wide mt-1";
+                certEvaluationDesc.innerHTML = `Kiểm định viên <b class="text-white">${studentName}</b> đã hoàn thành kiểm định toàn bộ <b>15/15 hồ sơ dữ liệu Địa lí Tự nhiên ngẫu nhiên</b> qua 3 cấp độ khó (có kết hợp chế độ soi lại chứng cứ và gợi ý từ hệ thống). Hãy thử sức lượt mới với bộ đề ngẫu nhiên khác để săn mức thưởng +0.5 điểm!`;
+                certBonusPoints.textContent = "+0.25 ĐIỂM";
+                certBonusPoints.className = "text-3xl sm:text-4xl font-extrabold font-mono-tech text-cyan-300 my-1";
+                certHintCountTag.textContent = `Đã dùng gợi ý: ${totalHintsUsed} thẻ`;
+                certHintCountTag.className = "text-[11px] px-2.5 py-0.5 rounded bg-slate-900 text-amber-300 border border-amber-400/40 font-semibold";
+                certCard.className = "tech-panel rounded-2xl p-5 sm:p-8 border-2 border-cyan-400/60 relative overflow-hidden shadow-2xl";
+                certRewardBox.className = "bg-gradient-to-br from-cyan-500/25 via-sky-500/15 to-emerald-500/20 border-2 border-cyan-400/60 rounded-xl p-4 text-center flex flex-col items-center justify-center h-full";
+                certBadgeIcon.className = "fa-solid fa-certificate";
+            }
+        }
+
+        function resetGameSameStudent() {
+            // Re-draw a fresh randomized 15-card set from the 45-card bank
+            buildRandomizedDeck();
+
+            currentIndex = 0;
+            credibility = 100;
+            currentStreak = 0;
+            usedSystemHint = false;
+            totalHintsUsed = 0;
+            focusViolations = 0;
+            isGameActive = true;
+
+            document.getElementById('antiAiWarningBar').classList.add('hidden');
+            document.getElementById('certificateScreen').classList.add('hidden');
+            document.getElementById('headerLevelBadge').classList.remove('hidden');
+
+            const gameScreen = document.getElementById('gameScreen');
+            gameScreen.classList.remove('hidden');
+            gameScreen.classList.add('flex');
+
+            updateDashboardStats();
+            loadCurrentCard(true);
+        }
+
+        function changeStudentAccount() {
+            isGameActive = false;
+            stopCardCountdown();
+            document.getElementById('certificateScreen').classList.add('hidden');
+            document.getElementById('inspectorBadge').classList.add('hidden');
+            document.getElementById('inspectorBadge').classList.remove('flex');
+            document.getElementById('startScreen').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
